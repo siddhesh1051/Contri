@@ -4,16 +4,19 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import React from 'react'
 import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { v4 as id } from 'uuid'
 import { storage, } from './firebase'
+import cryptoRandomString from 'crypto-random-string';
+
 
 export default function Signup(props) {
+    const imgId = cryptoRandomString({length: 5, type: 'base64'});
     const auth = getAuth()
     const [email, setEmail] = useState('')
     const [password, setpassword] = useState('')
     const [name, setName] = useState('')
     const [img, setImg] = useState(() => {
-        return `https://avatars.dicebear.com/api/identicon/${id()}.svg`
+        console.log(imgId);
+        return `https://api.multiavatar.com/${imgId}.svg`
     })
     function handlefiles(e) {
         // console.log(e.target.files[0]);
