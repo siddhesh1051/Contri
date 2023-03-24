@@ -113,7 +113,7 @@ export default function Signup(props) {
     return (
         <div className='login' style={loginstyle}>
             <Toaster />
-            <h3 style={{ color: 'white', fontWeight: '400', fontSize: '20px', marginBottom: '18px', marginTop: '-20px' }}>Chatzoid - Signup</h3>
+            <h3 style={{ color: 'white', fontWeight: '400', fontSize: '20px', marginBottom: '18px', marginTop: '-20px' }}>Signup</h3>
             <div className="image" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <label htmlFor="imginput">
                     <img src={img} style={{ width: '135px', borderRadius: '12px', marginTop: '25px', position: 'relative', cursor: 'pointer' }} alt="" />
