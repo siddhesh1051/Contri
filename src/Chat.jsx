@@ -26,7 +26,6 @@ function Chat(props) {
     const [input, setInput] = useState("")
     const [message, setMessage] = useState([])
     const [uploading, setUploading] = useState(false)
-    const [showemoji, setShowemoji] = useState(false)
     // const q = query(collection(db, "messages"), orderBy('timestamp', 'asc'));
     const qr = query(collection(db, props.roomid), orderBy('timestamp', 'asc'));
     // const q1 = query(collection(db, "messages"),where(documentId(),'==', '3PPly1FEJjtJntqPEFAb'));

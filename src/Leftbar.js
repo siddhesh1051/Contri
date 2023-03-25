@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout';
-import { collection, onSnapshot, query } from 'firebase/firestore';
+import { collection, limit, onSnapshot, orderBy, query, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -22,6 +22,7 @@ export const Leftbar = (props) => {
   const [show, setShow] = useState(false)
   const [user, setUser] = useState([])
   const [currRoom, setcurrRoom] = useState(props.roomid);
+  const [latestMessage, setlatestMessage] = useState('This is Latest Message')
   const qr = query(collection(db, props.roomid));
   const [open, setOpen] = React.useState(false);
   const [filtered, setFiltered] = useState([])
@@ -130,27 +131,45 @@ export const Leftbar = (props) => {
               </div>
               {
                 roomsArr && filtered.length === 0 && JSON.parse(roomsArr).map(item => (
-                  currRoom==item?
-                  <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                  currRoom===item?
+                  <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
-                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    <div style={{display:'flex',flexDirection:'column'}}>
+                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                    </div>
+
+                    </div>
+                    
                     :
-                    <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                    <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
-                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    <div style={{display:'flex',flexDirection:'column'}}>
+                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                    </div> 
+                    </div>
                     
                 ))
               }
               {
                 filtered.map(item => (
-                  currRoom==item?
-                  <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                  currRoom===item?
+                  <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
-                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    <div style={{display:'flex',flexDirection:'column'}}>
+                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                    </div>                    
+                    </div>
                     :
-                    <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                    <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
-                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    <div style={{display:'flex',flexDirection:'column'}}>
+                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                    </div>
+                    </div>
                 ))
               }
             </div>
