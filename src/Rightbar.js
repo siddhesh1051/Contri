@@ -32,7 +32,7 @@ export const Rightbar = (props) => {
 
 
             <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '284px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s'}}>
-                <div className="rommspecificidandp" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginTop: '30px',padding:'20px', backgroundColor:'#4E4E4F', margin:'10px', borderRadius:'20px' }}>
+                <div className="rommspecificidandp" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginTop: '30px',padding:'20px', backgroundColor:'#2D2D2F', margin:'10px', borderRadius:'20px' }}>
                     <p style={{ color: 'white', font: 'Noto Sans', fontWeight: '500', fontStyle: 'normal', fontSize: '24px', letterSpacing: '-0.035em', marginLeft: '31px', marginRight: '26px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>{props.roomid}<ContentCopyIcon style={{ marginLeft: '12px', width: '18.25px', marginBottom: '-1.8px', cursor: 'pointer', color: 'white' }} onClick={() => {
                         navigator.clipboard.writeText(props.roomid); toast.success('Room id copied to clipboard', {
                             style: {
@@ -44,7 +44,7 @@ export const Rightbar = (props) => {
 
                 </div>
                { user&&user.length>0&&
-                <div className="sepater" style={{ overflowY: 'scroll', maxheight: '50vh', padding:'5px', backgroundColor:'#4E4E4F', margin:'10px', borderRadius:'20px'  }}>
+                <div className="sepater" style={{ overflowY: 'scroll', maxheight: '50vh', padding:'5px', backgroundColor:'#2D2D2F', margin:'10px', borderRadius:'20px'  }}>
                 <h5 className="memheader">Members</h5>
                     
                     {
@@ -61,7 +61,7 @@ export const Rightbar = (props) => {
                     }
                 </div>}
 
-                <div className="sepater" style={{ overflowY: 'scroll', maxheight: '50vh', padding:'5px', backgroundColor:'#4E4E4F', margin:'10px', borderRadius:'20px'  }}>
+                <div className="sepater" style={{ overflowY: 'scroll', maxheight: '50vh', padding:'5px', backgroundColor:'#2D2D2F', margin:'10px', borderRadius:'20px'  }}>
                 <h5 className="memheader">Shared Files&nbsp; : </h5>
                 </div>  
 

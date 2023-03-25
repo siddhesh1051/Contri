@@ -19,7 +19,6 @@ import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
 import './css/Responsive.css'
 import ReactTimeAgo from 'react-time-ago'
-import './css/Responsive.css'
 
 function Chat(props) {
     const [input, setInput] = useState("")
@@ -168,12 +167,12 @@ function Chat(props) {
 
                                 ) :
                                     <div className="messageboxcont">
-                                        <div className="imgbox">
-                                            <img className='imgboximg' src={item.userimg} alt="" />
+                                        <div className="imgbox" >
+                                            <img className='imgboximg' src={item.userimg} alt="" style={{marginTop:'23px'}} />
                                         </div>
                                         <div className="messagebox">
                                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                                <p className='fontemmm'>{item.name}</p>
+                                                <p className='fontemmm' style={{fontSize:'16px',marginBottom:'2px' ,marginLeft:'1px'}}>{item.name}</p>
                                                 <div className="timestamp" style={{ marginLeft: '11.25px', marginBottom: '-2px' }}>
                                                     <p className='tieemmm' style={{ fontSize: '11.5px', color: '#828282', lineHeight: '25px', letterSpacing: '-0.035em', fontFamily: 'Poppins' }}>{
                                                         item.timestamp ?
@@ -184,7 +183,7 @@ function Chat(props) {
                                             </div>
                                             {
                                                 item.text.includes('http') ? (
-                                                    <div className="file" style={{ border: '0px solid #616161', borderRadius: '9px', padding: '2px 2px', marginTop: '5px', backgroundColor: '', paddingBottom: '3px', overflowX: 'scroll', marginBottom: '0px', zIndex: '99', minWidth: 'inherit' }}>
+                                                    <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'scroll', zIndex: '99', minWidth: 'inherit',padding:'15px',backgroundColor:'#0073FF',borderRadius:'15px' }}>
                                                         <a key={index} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '-3px', marginBottom: '-3px', fontSize: '13px' }}>
                                                             {
 
@@ -217,11 +216,14 @@ function Chat(props) {
                                                         </a>
                                                     </div>
                                                 ) : (
+                                                    <div className='message__text__box' style={{padding:'10px',backgroundColor:'#0073FF',borderRadius:'15px',width:'fit-content'}}>
+
                                                     <p key={index} className="chat__body__message">
                                                         {item.text}
                                                         {/* {(item.name===props.name)?
                                                         <DeleteOutlineIcon style={{width:'19px',marginLeft:'19px',marginBottom:'-1px',cursor:'pointer'}}/>:<></>} */}
                                                     </p>
+                                                 </div>
                                                 )
                                             }
                                         </div>

@@ -21,11 +21,17 @@ export const Leftbar = (props) => {
 
   const [show, setShow] = useState(false)
   const [user, setUser] = useState([])
+  const [currRoom, setcurrRoom] = useState('');
   const qr = query(collection(db, props.roomid));
   const [open, setOpen] = React.useState(false);
-  const [showRooms, setShowRooms] = useState(false)
   const [filtered, setFiltered] = useState([])
   const [openAdd, setOpenAdd] = React.useState(false);
+  let notSelected = '#3C393F';
+  const [boxColor, setboxColor] = useState(notSelected);
+   const changeColor =()=>{
+      let selected = '#0156BD';
+      setboxColor(selected);
+    }
 
   const handleClickOpenAdd = () => {
     setOpenAdd(true);
@@ -69,6 +75,8 @@ export const Leftbar = (props) => {
     if (!newroomid) return toast.error('invalid room id')
     localStorage.setItem('rooms', JSON.stringify([...JSON.parse(roomsArr), newroomid]))
     setNewRoomid('')
+    props.switchroom(newroomid)
+    setcurrRoom(newroomid)
     handleCloseAdd()
   }
 
@@ -88,12 +96,11 @@ export const Leftbar = (props) => {
       </div>
       <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '350px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s' }}>
         <div className="channelheader" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '52px', borderBottom: '1px solid rgb(35 35 35)' }}>
-          {
-            showRooms ? <><p style={{ fontSize: '16px', marginLeft: '34px', fontWeight: 'bold' }}> Rooms</p><div onClick={() => { handleClickOpenAdd() }} style={{ marginLeft: 'auto', marginRight: '20px', backgroundColor: '#252329', padding: '5px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', cursor: 'pointer' }}><AddIcon sx={{}} /></div></> : <>
-              <ArrowBackIosIcon onClick={() => { setShowRooms(prev => !prev) }} sx={{ fontSize: '18.5px', marginLeft: '32px', marginRight: '7px', cursor: 'pointer' }} />
-              <p onClick={() => { setShowRooms(prev => !prev) }} style={{ fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}>All Rooms</p>
-            </>
-          }
+          
+           <p style={{ fontSize: '16px', marginLeft: '34px', fontWeight: 'bold' }}> Rooms</p><div onClick={() => { handleClickOpenAdd() }} style={{ marginLeft: 'auto', marginRight: '20px', backgroundColor: '#252329', padding: '5px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', cursor: 'pointer' }}><AddIcon sx={{}} /></div>
+              
+           
+          
         </div>
         <Dialog PaperProps={{
           sx: {
@@ -107,7 +114,7 @@ export const Leftbar = (props) => {
               <input
                 style={{ width: '92%', marginTop: '18px', fontSize: '13.75px', fontFamily: 'Poppins', backgroundColor: '#3C393F', height: '45px', border: 'none', outline: 'none', borderRadius: '7px', color: 'white', padding: '6px 13px' }}
                 placeholder="Enter roomid"
-                value={newroomid} onChange={e => setNewRoomid(e.target.value)}
+                value={newroomid} onChange={e => setNewRoomid(e.target.value)} 
               />
 
             </DialogContent>
@@ -118,8 +125,8 @@ export const Leftbar = (props) => {
           </div>
 
         </Dialog>
-        {
-          showRooms ? <>
+        
+          
 
             <div className="people" style={{ display: 'flex', flexDirection: 'column', marginTop: '16px', marginBottom: '12px', marginLeft: '28.59px', overflow: 'scroll', height: '88vh' }}>
               <div className="searchbox" style={{ backgroundColor: '#3C393F', width: '90%', borderRadius: '8px', padding: '3.5px 0px', marginBottom: '22px', marginTop: '15px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -127,47 +134,38 @@ export const Leftbar = (props) => {
                 <input onChange={e => setFilter(e.target.value)} style={{ border: 'none', outline: 'none', padding: '10px 15px', backgroundColor: 'transparent', color: 'white' }} type="text" placeholder='Search' />
               </div>
               {
-                roomsArr && filtered.length === 0 && JSON.parse(roomsArr).map(item => {
-                  return <div onClick={() => { props.switchroom(item); setShowRooms(false) }} key={item} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '15px', cursor: 'pointer' }}>
-                    <div style={{ backgroundColor: '#252329', padding: '11px 18px', borderRadius: '11px', marginRight: '15px', fontSize: '15px' }} className="box">{item.slice(0, 1)}</div>
-                    <p style={{ fontSize: '15px' }}>{item}</p></div>
-                })
+                roomsArr && filtered.length === 0 && JSON.parse(roomsArr).map(item => (
+                  currRoom==item?
+                  <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                    <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
+                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    :
+                    <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                    <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
+                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    
+                ))
               }
               {
-                filtered.map(item => {
-                  return <div onClick={() => { props.switchroom(item); setShowRooms(false) }} key={item} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '15px', cursor: 'pointer' }}>
-                    <div style={{ backgroundColor: '#252329', padding: '11px 18px', borderRadius: '11px', marginRight: '15px', fontSize: '15px' }} className="box">{item.slice(0, 1)}</div>
-                    <p style={{ fontSize: '15px' }}>{item}</p></div>
-                })
+                filtered.map(item => (
+                  currRoom==item?
+                  <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                    <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
+                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                    :
+                    <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)' }}>
+                    <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
+                    <p style={{ fontSize: '17px' }}>{item}</p></div>
+                ))
               }
             </div>
-          </> :
-            <>
-              {/* <div className="rommspecificidandp" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '34px' }}>
-                <p style={{ color: 'white', font: 'Noto Sans', fontWeight: '500', fontStyle: 'normal', fontSize: '18.85px', letterSpacing: '-0.035em', marginLeft: '31px', marginRight: '26px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>{props.roomid}<ContentCopyIcon style={{ marginLeft: '12px', width: '18.25px', marginBottom: '-1.8px', cursor: 'pointer', color: 'white' }} onClick={() => {
-                  navigator.clipboard.writeText(props.roomid); toast.success('Room id copied to clipboard', {
-                    style: {
-                      fontFamily: 'Poppins',
-                      fontSize: '12.5px'
-                    },
-                  });
-                }} /></p>
-
-              </div> */}
-{/* 
-              <div className="roomidandstuff" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 29px', marginTop: '29px' }}>
-                <p style={{ color: 'white', font: 'Noto Sans', fontWeight: '400', fontStyle: 'normal', fontSize: '15px', letterSpacing: '-0.035em' }}>Share this room id to your friends</p>
-              </div> */}
-
-
-              
-            </>
-        }
+           
+        
 
         <div className="userdetails" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: '0px', height: '57px', backgroundColor: '#0B090C', width: '100%', borderTop: '1px solid rgb(22 21 21)' }}>
           <img src={props.photo} style={{ width: '35px', height: '35px', borderRadius: '11px', marginLeft: '24px', marginTop: '-1.0px' }} alt="" />
           <h5 style={{ marginLeft: '12px', font: 'Noto Sans', fontWeight: '500', fontStyle: 'normal', fontSize: '15px', letterSpacing: '-0.035em', zIndex: '99', color: '#828282' }}>{props.name}</h5>
-          <button onClick={() => { handleClickOpen() }} style={{ cursor: 'pointer', width: 'fit-content%', marginLeft: '270px', outline: 'none', border: 'none', backgroundColor: 'transparent', position: 'absolute', left: '29px', marginTop: '4px' }}><LogoutIcon style={{ width: '20.2px', color: 'white' }}></LogoutIcon></button>
+          <button onClick={() => { handleClickOpen() }} style={{ cursor: 'pointer', width: 'fit-content', marginLeft: '270px', outline: 'none', border: 'none', backgroundColor: 'transparent', position: 'absolute', left: '29px', marginTop: '4px' }}><LogoutIcon style={{ width: '20.2px', color: 'white' }}></LogoutIcon></button>
           <Dialog
             open={open}
             onClose={handleClose}
