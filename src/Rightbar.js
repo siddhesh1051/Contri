@@ -84,13 +84,13 @@ export const Rightbar = (props) => {
                         })
                     }
                 </div>}
-
+               { message&&message.length>0&&
                 <div className="sepater" style={{overflowY:'auto', maxHeight: '300px', padding:'5px', backgroundColor:'#2D2D2F', margin:'10px', borderRadius:'10px'  }}>
                 <h5 className="memheader" style={{fontFamily:'cursive' ,marginBottom:'15px',marginLeft:'12px'}}>Shared Files</h5>
-
-                    
                 {
                     message&&message.length>0&&message.map((item)=>{
+
+                    
                         {   
                             //image
                             if(item.filetype==="image/jpeg" || item.filetype==="image/png" || item.filetype==="image/jpg"){
@@ -152,7 +152,9 @@ export const Rightbar = (props) => {
 
                     })
                 }
+                
                 </div>  
+}
 
 
 

@@ -17,6 +17,12 @@ function App() {
   const [room, setroom] = useState(null)
   const [roomImg, setroomImg] = useState(null)
   const [signup, setSignUp] = useState(false)
+
+  const roomsArr = localStorage.getItem('rooms')
+
+
+  
+
   useEffect(() => {
     if (localStorage.getItem('user')) {
       if (localStorage.getItem('user') !== 'undefined') {
@@ -25,12 +31,21 @@ function App() {
     }
     if (localStorage.getItem('room')) {
       setroom(localStorage.getItem('room'))
+
+
     }
-  }, [])
+  },[])
+  console.log(room)
 
   function setgetuser(e) {
     setUser(e)
     localStorage.setItem('user', JSON.stringify(e))
+    localStorage.setItem('room', 'chat')
+    if (localStorage.getItem('room')) {
+      setroom(localStorage.getItem('room'))
+      
+
+    }
   }
   function handlelogout() {
     setUser(null)

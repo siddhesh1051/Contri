@@ -74,7 +74,7 @@ export const Leftbar = (props) => {
     setNewRoomid('')
     props.switchroom(newroomid)
     setcurrRoom(newroomid)
-    handleCloseAdd()
+    handleCloseAdd();
   }
 
   function setFilter(text) {

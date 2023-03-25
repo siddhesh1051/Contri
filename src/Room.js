@@ -53,7 +53,7 @@ export const Room = (props) => {
       {
         roomid ? (<Button onClick={() => { handleRoomID() }} sx={{ width: "179px", margin: 'auto', fontFamily: 'Poppins', color: 'white', backgroundColor: '#2F80ED', textTransform: 'lowercase' }} >Join Room <LoginIcon style={{ marginLeft: '9px', width: '25px', height: '24px', color: 'white', }}></LoginIcon></Button>) : (<Button disabled sx={{ width: "179px", margin: 'auto', fontFamily: 'Poppins', textTransform: 'lowercase', backgroundColor: '#5c84b8' }}>Join Room <LoginIcon style={{ marginLeft: '9px', width: '25px', height: '24px' }}></LoginIcon></Button>)
       }
-      <Button onClick={() => { props.setUser(null) }} style={{ position: 'absolute', bottom: 0, marginTop: '19px', marginLeft: "19px", color: 'white', marginBottom: '21px', textTransform: 'lowercase', fontSize: '14px', fontFamily: 'Poppins' }}>signout</Button>
+      <Button onClick={() => { props.setUser(null) }} style={{ position: 'absolute', bottom: 0, marginTop: '19px', marginLeft: "19px", color: 'white', marginBottom: '21px', textTransform: 'lowercase', fontSize: '14px', fontFamily: 'Poppins' }}>Signout</Button>
 
     </div>
   )
