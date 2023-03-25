@@ -50,6 +50,7 @@ export const Leftbar = (props) => {
       onSnapshot(qr, (snapshot) => setUser(snapshot.docs.map((doc) => [{ name: doc.data().name, img: doc.data().userimg }])))
     }
     , [props.roomid]);
+    
   user.forEach((item) => {
     map.set(item[0].name, item[0].img);
   })
@@ -90,7 +91,7 @@ export const Leftbar = (props) => {
         }
 
       </div>
-      <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '350px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s' }}>
+      <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '330px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s' }}>
         <div className="channelheader" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '52px', borderBottom: '1px solid rgb(35 35 35)' }}>
           
            <p style={{ fontSize: '16px', marginLeft: '34px', fontWeight: 'bold' }}> Rooms</p><div onClick={() => { handleClickOpenAdd() }} style={{ marginLeft: 'auto', marginRight: '20px', backgroundColor: '#252329', padding: '5px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', cursor: 'pointer' }}><AddIcon sx={{}} /></div>
@@ -135,7 +136,7 @@ export const Leftbar = (props) => {
                   <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
-                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
                       <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
                     </div>
 
@@ -145,7 +146,7 @@ export const Leftbar = (props) => {
                     <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
-                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
                       <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
                     </div> 
                     </div>
@@ -158,7 +159,7 @@ export const Leftbar = (props) => {
                   <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
-                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
                       <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
                     </div>                    
                     </div>
@@ -166,7 +167,7 @@ export const Leftbar = (props) => {
                     <div onClick={() => { props.switchroom(item);setcurrRoom(item)}}  key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#3C393F', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
-                      <p style={{ fontSize: '17px' }}>{item}</p>
+                      <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
                       <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
                     </div>
                     </div>

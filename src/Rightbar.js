@@ -15,6 +15,14 @@ export const Rightbar = (props) => {
     const [user, setUser] = useState([])
     const [message, setMessage] = useState([])
 
+    
+
+
+
+
+
+
+
     const qr = query(collection(db, props.roomid));
 
 
@@ -46,9 +54,9 @@ export const Rightbar = (props) => {
             <Toaster />
 
 
-            <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '284px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s',overflow:'auto'}}>
+            <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '300px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s',overflow:'auto'}}>
                 <div className="rommspecificidandp" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginTop: '30px',padding:'20px', backgroundColor:'#03336E', margin:'10px', borderRadius:'10px' }}>
-                    <p style={{ color: 'white', fontFamily: 'cursive', fontWeight: '500', fontStyle: 'normal', fontSize: '32px', letterSpacing: '-0.035em', marginLeft: '31px', marginRight: '26px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>{props.roomid}<ContentCopyIcon style={{ fontSize:'32px', marginLeft: '12px', width: '30px', marginBottom: '-1.8px', cursor: 'pointer', color: '#B9B6B6' }} onClick={() => {
+                    <p style={{ color: 'white', fontFamily: 'cursive', fontWeight: '500', fontStyle: 'normal', fontSize: '32px', letterSpacing: '-0.035em', marginLeft: '31px', marginRight: '26px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>{props.roomid.length>11?props.roomid.slice(0,10) + '....': props.roomid  }<ContentCopyIcon style={{ fontSize:'32px', marginLeft: '12px', width: '30px', marginBottom: '-1.8px', cursor: 'pointer', color: '#B9B6B6' }} onClick={() => {
                         navigator.clipboard.writeText(props.roomid); toast.success('Room id copied to clipboard', {
                             style: {
                                 fontFamily: 'Poppins',
@@ -87,7 +95,7 @@ export const Rightbar = (props) => {
                             //image
                             if(item.filetype==="image/jpeg" || item.filetype==="image/png" || item.filetype==="image/jpg"){
                                 return (
-                                <a key={item.text} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '10px', marginBottom: '5px', fontSize: '13px' }}>
+                                <a key={item.text} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '10px', marginBottom: '5px', fontSize: '13px'}}>
                                 <div className='fileDiv' style={{display:'flex',flexDirection:'row', padding:'5px',backgroundColor:'#3C393F',borderRadius:'10px',width:'90%'}}>
 
                                 <ImageIcon style={{ marginRight: '7.5px', fontSize: '24px', color: 'violet' }}></ImageIcon> <span style={{ marginRight: '7.5px', fontSize: '13px'}} >{item.filename}</span>

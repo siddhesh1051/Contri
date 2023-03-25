@@ -154,8 +154,8 @@ function Chat(props) {
             <div className="chat__body" id="custom">
                 {
                     message.map((item, index) => {
-                        return (<>
-                            {
+                        return (<div key={index}>
+                            {   
                                 (item.alert === true) ? (
                                     (Math.abs(Date.parse(item.date) - Date.parse(new Date().toString())) < 3000) ?
                                         (item.name !== props.name) ?
@@ -230,7 +230,7 @@ function Chat(props) {
                                             }
                                         </div>
                                     </div>}
-                        </>
+                        </div>
                         )
                     })
                 }
