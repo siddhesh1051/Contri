@@ -178,7 +178,11 @@ export const Leftbar = (props) => {
 
         <div className="userdetails" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: '0px', height: '57px', backgroundColor: '#0B090C', width: '100%', borderTop: '1px solid rgb(22 21 21)' }}>
           <img src={props.photo} style={{ width: '35px', height: '35px', borderRadius: '11px', marginLeft: '24px', marginTop: '-1.0px' }} alt="" />
-          <h5 style={{ marginLeft: '12px', font: 'Noto Sans', fontWeight: '500', fontStyle: 'normal', fontSize: '15px', letterSpacing: '-0.035em', zIndex: '99', color: '#828282' }}>{props.name}</h5>
+          <div style={{display:'flex' , flexDirection:'column'}}>
+
+          <h4 style={{ marginLeft: '12px', font: 'Noto Sans', fontWeight: '500', fontStyle: 'normal', fontSize: '18px', letterSpacing: '-0.035em', zIndex: '99', color: '#C4C1C1' }}>{props.name}</h4>
+          <h5 style={{ marginLeft: '12px', font: 'Noto Sans',fontFamily:'cursive', fontWeight: '500', fontStyle: 'normal', fontSize: '14px', letterSpacing: '-0.035em', zIndex: '99', color: '#828282' }}>{props.email}</h5>
+          </div>
           <button onClick={() => { handleClickOpen() }} style={{ cursor: 'pointer', width: 'fit-content', marginLeft: '270px', outline: 'none', border: 'none', backgroundColor: 'transparent', position: 'absolute', left: '29px', marginTop: '4px' }}><LogoutIcon style={{ width: '20.2px', color: 'white' }}></LogoutIcon></button>
           <Dialog
             open={open}
