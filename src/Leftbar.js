@@ -21,17 +21,12 @@ export const Leftbar = (props) => {
 
   const [show, setShow] = useState(false)
   const [user, setUser] = useState([])
-  const [currRoom, setcurrRoom] = useState('');
+  const [currRoom, setcurrRoom] = useState(props.roomid);
   const qr = query(collection(db, props.roomid));
   const [open, setOpen] = React.useState(false);
   const [filtered, setFiltered] = useState([])
   const [openAdd, setOpenAdd] = React.useState(false);
-  let notSelected = '#3C393F';
-  const [boxColor, setboxColor] = useState(notSelected);
-   const changeColor =()=>{
-      let selected = '#0156BD';
-      setboxColor(selected);
-    }
+  
 
   const handleClickOpenAdd = () => {
     setOpenAdd(true);

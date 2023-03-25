@@ -15,6 +15,7 @@ function App() {
   });
   const [user, setUser] = useState(null)
   const [room, setroom] = useState(null)
+  const [roomImg, setroomImg] = useState(null)
   const [signup, setSignUp] = useState(false)
   useEffect(() => {
     if (localStorage.getItem('user')) {

@@ -20,10 +20,13 @@ import SendIcon from '@mui/icons-material/Send';
 import './css/Responsive.css'
 import ReactTimeAgo from 'react-time-ago'
 
+
+
 function Chat(props) {
     const [input, setInput] = useState("")
     const [message, setMessage] = useState([])
     const [uploading, setUploading] = useState(false)
+    const [showemoji, setShowemoji] = useState(false)
     // const q = query(collection(db, "messages"), orderBy('timestamp', 'asc'));
     const qr = query(collection(db, props.roomid), orderBy('timestamp', 'asc'));
     // const q1 = query(collection(db, "messages"),where(documentId(),'==', '3PPly1FEJjtJntqPEFAb'));
@@ -141,7 +144,7 @@ function Chat(props) {
         <div className='chatbox'>
             <Toaster />
             <div className="chat__header" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <Navbar roomid={props.roomid}></Navbar>
+                <Navbar roomid={props.roomid} roomImg={props.roomImg}></Navbar>
             </div>
             <div className="uploadprogress">
                 {
@@ -236,9 +239,11 @@ function Chat(props) {
 
             <div className="chat__footer">
                 <div className="forbginput chat__footer" >
+                {/* <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'7px', marginRight:'2px' }}><EmojiEmotionsOutlined /></label> */}
+              
                     <input value={input} type="text" placeholder='Type a message...' onKeyPress={(e) => handleEnterButton(e)} onChange={inputhandler} />
                     <input type="file" name="" onChange={(e) => handlefiles(e)} id="filein" hidden />
-                    <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer' }}><AttachmentIcon /></label>
+                    <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'3px' }}><AttachmentIcon /></label>
 
                     {
                         input ? (<Button onClick={() => { sendMessage() }} style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
