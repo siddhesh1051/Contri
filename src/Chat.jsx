@@ -7,7 +7,7 @@ import { db, storage } from './firebase';
 import { addDoc, collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { Button, LinearProgress, Snackbar } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Snackbar } from '@mui/material';
 import Navbar from './Navbar'
 import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -19,6 +19,7 @@ import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
 import './css/Responsive.css'
 import ReactTimeAgo from 'react-time-ago'
+import Split from './split';
 
 
 
@@ -26,6 +27,15 @@ function Chat(props) {
     const [input, setInput] = useState("")
     const [message, setMessage] = useState([])
     const [uploading, setUploading] = useState(false)
+    const [isSplit, setisSplit] = useState(false)
+    const [splitAmount, setSplitAmount] = useState()
+    const [splitTitle, setSplitTitle] = useState("")
+    const [type, setType] = useState("text")
+
+    const [splitUsers, setSplitUsers] = useState([])
+    const [splitUsersName, setSplitUsersName] = useState([])
+    const [splitUsersPhoto, setSplitUsersPhoto] = useState([])
+
     // const q = query(collection(db, "messages"), orderBy('timestamp', 'asc'));
     const qr = query(collection(db, props.roomid), orderBy('timestamp', 'asc'));
     // const q1 = query(collection(db, "messages"),where(documentId(),'==', '3PPly1FEJjtJntqPEFAb'));
@@ -34,10 +44,36 @@ function Chat(props) {
     //     console.log(e.data());
     // })
     const [open, setOpen] = React.useState(true);
+    const [openAdd, setOpenAdd] = React.useState(false);
+
+
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
+
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleCloseSplit = () => {
+        setOpen(false);
+    };
 
     const handleClick = () => {
         setOpen(true);
     };
+
+    function splitFunc() {
+        setisSplit(true)
+        setSplitTitle("")
+        setSplitAmount(0)
+        setOpen(false)
+
+    }
 
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
@@ -71,12 +107,38 @@ function Chat(props) {
             });
         }
     }
+
+    async function sendSplitMsg() {
+        if (splitTitle && splitAmount) { }
+        const title = splitTitle;
+        const amount = splitAmount;
+        // setSplitTitle("")
+        // setSplitAmount(0)
+        await addDoc(collection(db, props.roomid), {
+            name: props.name,
+            // text: msg,
+            splitTitle: title,
+            splitAmount: amount,
+            userimg: props.photo,
+            timestamp: serverTimestamp()
+            // splitUsers: splitUsers,
+            // splitUsersName: splitUsersName,
+        });
+        setisSplit(true)
+        setSplitTitle("")
+        setSplitAmount()
+        handleCloseAdd()
+
+
+
+    }
     function updateScroll() {
         var element = document.getElementById("custom");
         element.scrollTop = element.scrollHeight;
     }
     function handlefiles(e) {
         // console.log(e.target.files[0]);
+        setType("file")
         if (e.target.files[0].type === "image/png" || e.target.files[0].type === "application/pdf" || e.target.files[0].type === "image/jpg" || e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "video/mp4" || e.target.files[0].type === "audio/mpeg") {
             upload(e.target.files[0]);
         }
@@ -139,6 +201,7 @@ function Chat(props) {
             }
         );
     }
+    console.log(type);
     return (
         <div className='chatbox'>
             <Toaster />
@@ -155,7 +218,7 @@ function Chat(props) {
                 {
                     message.map((item, index) => {
                         return (<div key={index}>
-                            {   
+                            {
                                 (item.alert === true) ? (
                                     (Math.abs(Date.parse(item.date) - Date.parse(new Date().toString())) < 3000) ?
                                         (item.name !== props.name) ?
@@ -170,10 +233,45 @@ function Chat(props) {
                                 ) :
                                     <div className="messageboxcont">
                                         <div className="imgbox" >
-                                            <img className='imgboximg' src={item.userimg} alt="" style={{marginTop:'23px'}} />
+                                            <img className='imgboximg' src={item.userimg} alt="" style={{ marginTop: '23px' }} />
                                         </div>
                                         <div className="messagebox">
-                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+
+                                            {
+
+
+                                                <><div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                    <p className='fontemmm' style={{ fontSize: '16px', marginBottom: '2px', marginLeft: '1px' }}>{item.name}</p>
+                                                    <div className="timestamp" style={{ marginLeft: '11.25px', marginBottom: '-2px' }}>
+                                                        <p className='tieemmm' style={{ fontSize: '11.5px', color: '#828282', lineHeight: '25px', letterSpacing: '-0.035em', fontFamily: 'Poppins' }}>{item.timestamp ?
+                                                            <ReactTimeAgo date={Date.parse(item.timestamp.toDate())} locale="en-US" /> : <></>}</p>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                    {/* {<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} />} */}
+
+                                                </>
+                                            }
+
+                                            {/* hjsgdbsfsf */}
+                                            {/* {type==="text" ? <div>
+                                                text
+                                            </div>
+                                                : type==="file" ? <div>
+                                                file
+                                            </div>
+                                                    : type==="split" ? <div>
+                                                        split
+                                                        </div>
+                                                        : <></>} */}
+
+
+                                            {/* jhdsdhsjdsd */}
+
+                                            {/* <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                                 <p className='fontemmm' style={{fontSize:'16px',marginBottom:'2px' ,marginLeft:'1px'}}>{item.name}</p>
                                                 <div className="timestamp" style={{ marginLeft: '11.25px', marginBottom: '-2px' }}>
                                                     <p className='tieemmm' style={{ fontSize: '11.5px', color: '#828282', lineHeight: '25px', letterSpacing: '-0.035em', fontFamily: 'Poppins' }}>{
@@ -182,52 +280,57 @@ function Chat(props) {
                                                     }</p>
                                                 </div>
 
-                                            </div>
+                                            </div> */}
+
                                             {
-                                                item.text.includes('http') ? (
-                                                    <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'scroll', zIndex: '99', minWidth: 'inherit',padding:'15px',backgroundColor:'#0073FF',borderRadius:'15px' }}>
-                                                        <a key={index} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '-3px', marginBottom: '-3px', fontSize: '13px' }}>
-                                                            {
+                                                item.text ? (
+                                                    
+                                                        <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'scroll', zIndex: '99', minWidth: 'inherit', padding: '15px', backgroundColor: '#0073FF', borderRadius: '15px' }}>
+                                                            <a key={index} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '-3px', marginBottom: '-3px', fontSize: '13px' }}>
+                                                                {
 
-                                                                (item.filetype === "image/png" || item.filetype === "image/jpg" || item.filetype === "image/jpeg") ? (
-                                                                    <ImageIcon style={{ marginRight: '7.5px', fontSize: '24px', color: 'white' }}></ImageIcon>
-                                                                ) : (<></>)
-                                                            }
-                                                            {
+                                                                    (item.filetype === "image/png" || item.filetype === "image/jpg" || item.filetype === "image/jpeg") ? (
+                                                                        <ImageIcon style={{ marginRight: '7.5px', fontSize: '24px', color: 'white' }}></ImageIcon>
+                                                                    ) : (<></>)
+                                                                }
+                                                                {
 
-                                                                (item.filetype === "application/pdf") ? (
-                                                                    <PictureAsPdfIcon sx={{ color: red[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></PictureAsPdfIcon>
-                                                                ) : (<></>)
-                                                            }
-                                                            {
+                                                                    (item.filetype === "application/pdf") ? (
+                                                                        <PictureAsPdfIcon sx={{ color: red[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></PictureAsPdfIcon>
+                                                                    ) : (<></>)
+                                                                }
+                                                                {
 
-                                                                (item.filetype === "audio/mpeg") ? (
-                                                                    <LibraryMusicIcon sx={{ color: teal[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></LibraryMusicIcon>
-                                                                ) : (<></>)
-                                                            }
-                                                            {
+                                                                    (item.filetype === "audio/mpeg") ? (
+                                                                        <LibraryMusicIcon sx={{ color: teal[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></LibraryMusicIcon>
+                                                                    ) : (<></>)
+                                                                }
+                                                                {
 
-                                                                (item.filetype === "video/mp4") ? (
-                                                                    <VideocamIcon color="secondary" style={{ marginRight: '7.5px', fontSize: '24px' }}></VideocamIcon>
-                                                                ) : (<></>)
-                                                            }
-                                                            {
-                                                                (item.filetype) ? (item.filename) : (item.text)
-                                                            }
+                                                                    (item.filetype === "video/mp4") ? (
+                                                                        <VideocamIcon color="secondary" style={{ marginRight: '7.5px', fontSize: '24px' }}></VideocamIcon>
+                                                                    ) : (<></>)
+                                                                }
+                                                                {
+                                                                    (item.filetype) ? (item.filename) : (item.text)
+                                                                }
 
-                                                        </a>
-                                                    </div>
-                                                ) : (
-                                                    <div className='message__text__box' style={{padding:'10px',backgroundColor:'#0073FF',borderRadius:'15px',width:'fit-content'}}>
-
-                                                    <p key={index} className="chat__body__message">
-                                                        {item.text}
-                                                        {/* {(item.name===props.name)?
-                                                        <DeleteOutlineIcon style={{width:'19px',marginLeft:'19px',marginBottom:'-1px',cursor:'pointer'}}/>:<></>} */}
-                                                    </p>
-                                                 </div>
-                                                )
+                                                            </a>
+                                                        </div>
+                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} />)
+                                            
                                             }
+
+                                            {/* {type == "text" ? <div className='message__text__box' style={{ padding: '10px', backgroundColor: '#0073FF', borderRadius: '15px', width: 'fit-content' }}>
+
+                                                <p key={index} className="chat__body__message">
+                                                    {item.text}
+
+                                                </p>
+                                            </div>
+                                                : <></>
+                                            } */}
+
                                         </div>
                                     </div>}
                         </div>
@@ -238,14 +341,52 @@ function Chat(props) {
 
             <div className="chat__footer">
                 <div className="forbginput chat__footer" >
-                {/* <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'7px', marginRight:'2px' }}><EmojiEmotionsOutlined /></label> */}
-              
+                    {/* <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'7px', marginRight:'2px' }}><EmojiEmotionsOutlined /></label> */}
+
                     <input value={input} type="text" placeholder='Type a message...' onKeyPress={(e) => handleEnterButton(e)} onChange={inputhandler} />
-                    <input type="file" name="" onChange={(e) => handlefiles(e)} id="filein" hidden />
-                    <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'3px' }}><AttachmentIcon /></label>
+                    <button className='splitBtn' style={{ width: 'fit-content', padding: '10px', borderRadius: '100px', marginRight: '20px', backgroundColor: '#c3edff', border: 'none' }} onClick={() => { handleClickOpenAdd() }}>Split</button>
+                    <Dialog PaperProps={{
+                        sx: {
+                            width: "100%",
+                            maxWidth: "480px!important",
+                        }, style: { borderRadius: '11px' }
+                    }} open={openAdd} onClose={handleCloseAdd}>
+                        <div style={{ backgroundColor: '#252329' }}>
+                            <DialogTitle>Split An Expense</DialogTitle>
+                            <DialogContent>
+                                {/* <h4>Enter Title</h4> */}
+                                <input
+                                    style={{ width: '92%', marginTop: '18px', fontSize: '13.75px', fontFamily: 'Poppins', backgroundColor: '#3C393F', height: '45px', border: 'none', outline: 'none', borderRadius: '7px', color: 'white', padding: '6px 13px' }}
+                                    placeholder="Enter Title"
+                                    type='text'
+                                    value={splitTitle} onChange={e => setSplitTitle(e.target.value)}
+                                    required={true}
+
+                                />
+                                {/* <h4>Enter Amount</h4> */}
+                                <input
+                                    style={{ width: '92%', marginTop: '18px', fontSize: '13.75px', fontFamily: 'Poppins', backgroundColor: '#3C393F', height: '45px', border: 'none', outline: 'none', borderRadius: '7px', color: 'white', padding: '6px 13px' }}
+                                    placeholder="Enter Amount"
+                                    type='number'
+                                    coun
+                                    value={splitAmount} onChange={e => setSplitAmount(e.target.value)}
+                                    required={true}
+
+                                />
+
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCloseAdd} style={{ fontFamily: 'Poppins' }}>Cancel</Button>
+                                <Button onClick={() => { sendSplitMsg(); setType("split") }} style={{ fontFamily: 'Poppins' }}>Add</Button>
+                            </DialogActions>
+                        </div>
+
+                    </Dialog>
+                    <input type="file" name="" onChange={(e) => { handlefiles(e) }} id="filein" hidden />
+                    <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer', marginTop: '3px' }}><AttachmentIcon /></label>
 
                     {
-                        input ? (<Button onClick={() => { sendMessage() }} style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
+                        input || isSplit ? (<Button onClick={() => { sendMessage(); setType("text") }} style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
                             <SendIcon sx={{ fontSize: "21px", color: 'white' }}></SendIcon>
                         </Button>) : (<Button disabled style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
                             <SendIcon sx={{ fontSize: "21px" }}></SendIcon>

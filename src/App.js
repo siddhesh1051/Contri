@@ -9,6 +9,7 @@ import { Rightbar } from './Rightbar';
 import Signup from './Signup';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
+import Split from './split';
 function App() {
   const darkTheme = createTheme({
     palette: {
@@ -87,6 +88,7 @@ function App() {
               <Leftbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} email={user.email} switchroom={roomswitch} uid={user.uid} />
               <Chat photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
               <Rightbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
+              {/* <Split/> */}
             </div>) : <Room roomfunc={roomfunc} photo={user.photoURL} name={user.displayName} setUser={setgetuserSignup} uid={user.uid} />
             )
         }

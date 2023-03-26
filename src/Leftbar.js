@@ -5,14 +5,12 @@ import { db } from './firebase';
 import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import './css/Responsive.css'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast, { Toaster } from 'react-hot-toast';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -125,7 +123,7 @@ export const Leftbar = (props) => {
         <div className="channelheader" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '52px', borderBottom: '1px solid rgb(35 35 35)' }}>
           
            <p style={{ fontSize: '16px', marginLeft: '34px', fontWeight: 'bold' }}> Rooms</p><div onClick={() => { handleClickOpenAdd() }} style={{ marginLeft: 'auto', marginRight: '20px', backgroundColor: '#252329', padding: '5px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', cursor: 'pointer' }}><AddIcon sx={{}} /></div>
-              
+
            
           
         </div>

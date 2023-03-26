@@ -44,6 +44,7 @@ export const Rightbar = (props) => {
     user.forEach((item) => {
         map.set(item[0].name, item[0].img);
     })
+    let sharedArray = [];
 
 
 
@@ -91,9 +92,11 @@ export const Rightbar = (props) => {
                     message&&message.length>0&&message.map((item)=>{
 
                     
+                    console.log(sharedArray)
                         {   
                             //image
-                            if(item.filetype==="image/jpeg" || item.filetype==="image/png" || item.filetype==="image/jpg"){
+                            if((item.filetype==="image/jpeg" || item.filetype==="image/png" || item.filetype==="image/jpg")&& !sharedArray.includes(item.text)){
+                           sharedArray.push(item.text)
                                 return (
                                 <a key={item.text} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '10px', marginBottom: '5px', fontSize: '13px'}}>
                                 <div className='fileDiv' style={{display:'flex',flexDirection:'row', padding:'5px',backgroundColor:'#3C393F',borderRadius:'10px',width:'90%'}}>
@@ -105,7 +108,8 @@ export const Rightbar = (props) => {
                             )
 
                             //pdf
-                            }else if(item.filetype==="application/pdf"){
+                            }else if(item.filetype==="application/pdf" && !sharedArray.includes(item.text) ){
+                                sharedArray.push(item.text)
                                 return (
                                     <a key={item.text} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '10px', marginBottom: '5px', fontSize: '13px' }}>
                                 <div className='fileDiv' style={{display:'flex',flexDirection:'row', padding:'5px',backgroundColor:'#3C393F',borderRadius:'10px',width:'90%'}}>
@@ -117,7 +121,8 @@ export const Rightbar = (props) => {
                             )
 
                             //video
-                            }else if(item.filetype==="video/mp4"){
+                            }else if(item.filetype==="video/mp4" && !sharedArray.includes(item.text) ){
+                                sharedArray.push(item.text)
                                 return (
                                     <a key={item.text} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '10px', marginBottom: '5px', fontSize: '13px' }}>
                                 <div className='fileDiv' style={{display:'flex',flexDirection:'row', padding:'5px',backgroundColor:'#3C393F',borderRadius:'10px',width:'90%'}}>
@@ -130,7 +135,8 @@ export const Rightbar = (props) => {
                             )
 
                             //audio
-                            }else if(item.filetype==="audio/mpeg"){
+                            }else if(item.filetype==="audio/mpeg" && !sharedArray.includes(item.text)){
+                                sharedArray.push(item.text)
                                 return (
                                     
                                     <a key={item.text} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '10px', marginBottom: '5px', fontSize: '13px' }}>
