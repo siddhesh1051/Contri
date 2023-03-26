@@ -27,6 +27,7 @@ export const Leftbar = (props) => {
   const [open, setOpen] = React.useState(false);
   const [filtered, setFiltered] = useState([])
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [showReload, setshowReload] = useState(true)
 
   
 
@@ -45,6 +46,8 @@ export const Leftbar = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+
   const map = new Map();
   useEffect(
     () => {
@@ -199,6 +202,8 @@ export const Leftbar = (props) => {
                 ))
               }
             </div>
+
+            
            
         
 

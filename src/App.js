@@ -7,6 +7,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Leftbar } from './Leftbar';
 import { Rightbar } from './Rightbar';
 import Signup from './Signup';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from './firebase';
 function App() {
   const darkTheme = createTheme({
     palette: {
@@ -18,7 +20,6 @@ function App() {
   const [roomImg, setroomImg] = useState(null)
   const [signup, setSignUp] = useState(false)
 
-  const [doreload, setdoreload] = useState(false)
 
   const roomsArr = localStorage.getItem('rooms')
 
@@ -42,10 +43,20 @@ function App() {
   function setgetuserLogin(e) {
     setUser(e)
     localStorage.setItem('user', JSON.stringify(e))
-    localStorage.setItem('room', 'chat')
-    if (localStorage.getItem('room')) {
-      setroom(localStorage.getItem('room'))
+    const localRooms = getDoc(doc(db, "users", e.uid)).then((doc) => {
+      if (doc.exists()) {
+        console.log("Document data:", doc.data());
+        localStorage.setItem('rooms', JSON.stringify(doc.data().groups))
+        localStorage.setItem('room', doc.data().groups[0] )
+        setroom(localStorage.getItem('room'))
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
       }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+    
   }
   function setgetuserSignup(e) {
     setUser(e)
