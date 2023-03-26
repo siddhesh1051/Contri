@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout';
-import { collection, limit, onSnapshot, orderBy, query, getDocs } from 'firebase/firestore';
+import { collection, limit, onSnapshot, orderBy, query, getDocs, serverTimestamp, addDoc, updateDoc, doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -27,6 +27,7 @@ export const Leftbar = (props) => {
   const [open, setOpen] = React.useState(false);
   const [filtered, setFiltered] = useState([])
   const [openAdd, setOpenAdd] = React.useState(false);
+
   
 
   const handleClickOpenAdd = () => {
@@ -48,7 +49,10 @@ export const Leftbar = (props) => {
   useEffect(
     () => {
       onSnapshot(qr, (snapshot) => setUser(snapshot.docs.map((doc) => [{ name: doc.data().name, img: doc.data().userimg }])))
+      // onSnapshot(qr, (snapshot) => setlatestMessage(snapshot.docs.map((doc) => doc.data().text).slice(-1)[0]))
+      loadgroup()
     }
+    
     , [props.roomid]);
     
   user.forEach((item) => {
@@ -68,13 +72,34 @@ export const Leftbar = (props) => {
   const roomsArr = localStorage.getItem('rooms')
   const [newroomid, setNewRoomid] = useState('')
 
+  const docref = doc(db, "users", props.uid);
+  async function loadgroup() {
+   
+        const docSnap = await getDoc(docref);
+        if (docSnap.exists()) {
+            localStorage.setItem('rooms', JSON.stringify(docSnap.data().groups))
+        } else {
+            console.log('No such document!');
+        }
+}
+
+  async function savegroup() {
+   
+        await setDoc(docref, {
+            groups: [...JSON.parse(roomsArr), newroomid],
+            timestamp: serverTimestamp()
+        });
+    
+}
+
   function updateLocal() {
     if (!newroomid) return toast.error('invalid room id')
     localStorage.setItem('rooms', JSON.stringify([...JSON.parse(roomsArr), newroomid]))
     setNewRoomid('')
     props.switchroom(newroomid)
     setcurrRoom(newroomid)
-    handleCloseAdd();
+    savegroup()
+    handleCloseAdd()
   }
 
   function setFilter(text) {

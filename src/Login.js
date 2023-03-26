@@ -9,6 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import logo from './ico/logo.png'
+import { setDoc } from 'firebase/firestore';
 
 
 export const Login = (props) => {
@@ -17,6 +18,11 @@ export const Login = (props) => {
     const [password, setpassword] = useState('')
     const [open3, setOpen3] = React.useState(false);
     const [resetemail, setresetemail] = useState("")
+    const [roomid, setRoomid] = useState("")
+
+
+    const localRooms = localStorage.getItem('rooms')
+
 
     const handleClickOpen3 = () => {
         setOpen3(true);
@@ -57,6 +63,7 @@ export const Login = (props) => {
                     fontSize: '12.5px'
                 },
             });
+
             return
         }
         signInWithEmailAndPassword(auth, email, password)
@@ -73,6 +80,13 @@ export const Login = (props) => {
                     },
                 })
             });
+            
+            
+
+            // localStorage.setItem('rooms', JSON.stringify([...JSON.parse(localRooms), roomid]))
+            
+
+
     }
 
     const resetPassword = () => {

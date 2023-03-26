@@ -18,9 +18,11 @@ function App() {
   const [roomImg, setroomImg] = useState(null)
   const [signup, setSignUp] = useState(false)
 
+  const [doreload, setdoreload] = useState(false)
+
   const roomsArr = localStorage.getItem('rooms')
 
-
+  
   
 
   useEffect(() => {
@@ -71,10 +73,10 @@ function App() {
           (!user) ?
             (signup ? <Signup setSignUp={setSignUp} getuser={setgetuserSignup} /> : <Login setSignUp={setSignUp} getuser={setgetuserLogin} />) :
             (room ? (<div className="app__cont">
-              <Leftbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} email={user.email} switchroom={roomswitch} />
+              <Leftbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} email={user.email} switchroom={roomswitch} uid={user.uid} />
               <Chat photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
               <Rightbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
-            </div>) : <Room roomfunc={roomfunc} photo={user.photoURL} name={user.displayName} setUser={setgetuserSignup} />
+            </div>) : <Room roomfunc={roomfunc} photo={user.photoURL} name={user.displayName} setUser={setgetuserSignup} uid={user.uid} />
             )
         }
       </div>

@@ -2,37 +2,58 @@ import { Button, } from '@mui/material'
 import React, { useState } from 'react'
 import LoginIcon from '@mui/icons-material/Login';
 import { db } from './firebase';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where, setDoc, doc } from 'firebase/firestore';
 import { serverTimestamp } from 'firebase/firestore';
 export const Room = (props) => {
   const [roomid, setRoomid] = useState("")
-  async function handleRoomID() {
-    const localRooms = localStorage.getItem('rooms')
-    if (!localRooms) {
-      localStorage.setItem('rooms', JSON.stringify([roomid]))
-    } else {
-      localStorage.setItem('rooms', JSON.stringify([...JSON.parse(localRooms), roomid]))
-    }
-    const q = query(collection(db, roomid), where("alert", "==", true), where("name", "==", props.name));
-    const querySnapshot = await getDocs(q);
-    let arr = []
-    querySnapshot.forEach((doc) => {
-      arr.push(doc.id, " => ", doc.data());
-    });
-    if (arr.length === 0) {
-      const msg = `${props.name} joined the chat`;
-      await addDoc(collection(db, roomid), {
-        alert: true,
-        name: props.name,
-        text: msg,
-        userimg: props.photo,
-        timestamp: serverTimestamp(),
-        date: new Date().toString()
-      });
-    }
-    props.roomfunc(roomid)
 
+
+  const roomsArr = localStorage.getItem('rooms')
+  const newroomid = roomid 
+
+
+
+  const docref = doc(db, "users", props.uid);
+
+  async function savegroup() {
+   
+        await setDoc(docref, {
+            groups: [...JSON.parse(roomsArr), roomid],
+            timestamp: serverTimestamp()
+        });
+    
+}
+
+async function handleRoomID() {
+  const localRooms = localStorage.getItem('rooms')
+  if (!localRooms) {
+    localStorage.setItem('rooms', JSON.stringify([roomid]))
+  } else {
+    localStorage.setItem('rooms', JSON.stringify([...JSON.parse(localRooms), roomid]))
   }
+  const q = query(collection(db, roomid), where("alert", "==", true), where("name", "==", props.name));
+  const querySnapshot = await getDocs(q);
+  let arr = []
+  querySnapshot.forEach((doc) => {
+    arr.push(doc.id, " => ", doc.data());
+  });
+  if (arr.length === 0) {
+    const msg = `${props.name} joined the chat`;
+    await addDoc(collection(db, roomid), {
+      alert: true,
+      name: props.name,
+      text: msg,
+      userimg: props.photo,
+      timestamp: serverTimestamp(),
+      date: new Date().toString()
+    });
+  }
+  props.roomfunc(roomid)
+
+  savegroup()
+  
+}
+
   function handleGenerate() {
     const random = new Date().getHours().toString() + new Date().getMinutes().toString() + new Date().getSeconds().toString() + props.name.slice(0, Math.floor(Math.random() * 4)) + props.photo.slice(9, 10).toString()
     setRoomid(random)
