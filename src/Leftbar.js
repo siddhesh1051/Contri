@@ -97,6 +97,8 @@ export const Leftbar = (props) => {
 
   function updateLocal() {
     if (!newroomid) return toast.error('invalid room id')
+    if (JSON.parse(roomsArr).includes(newroomid)) return toast.error('room already exists')
+    
     localStorage.setItem('rooms', JSON.stringify([...JSON.parse(roomsArr), newroomid]))
     setNewRoomid('')
     props.switchroom(newroomid)
