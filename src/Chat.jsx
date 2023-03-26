@@ -7,7 +7,7 @@ import { db, storage } from './firebase';
 import { addDoc, collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Snackbar } from '@mui/material';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormGroup, LinearProgress, Snackbar } from '@mui/material';
 import Navbar from './Navbar'
 import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -31,6 +31,8 @@ function Chat(props) {
     const [splitAmount, setSplitAmount] = useState()
     const [splitTitle, setSplitTitle] = useState("")
     const [type, setType] = useState("text")
+    const [members, setmembers] = useState([])
+    const [updatedmembers, setupdatedmembers] = useState([])
 
     const [splitUsers, setSplitUsers] = useState([])
     const [splitUsersName, setSplitUsersName] = useState([])
@@ -46,6 +48,20 @@ function Chat(props) {
     const [open, setOpen] = React.useState(true);
     const [openAdd, setOpenAdd] = React.useState(false);
 
+    useEffect(
+        () => {
+            onSnapshot(qr, (snapshot) => setmembers(snapshot.docs.map((doc) => [{ name: doc.data().name, img: doc.data().userimg }])))
+            
+
+        }
+        , [props.roomid]);
+
+        
+        useEffect(() => {
+            setupdatedmembers(members.filter((e) => e[0].name !== props.name))
+        }, [members])
+
+           
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -66,14 +82,7 @@ function Chat(props) {
     const handleClick = () => {
         setOpen(true);
     };
-
-    function splitFunc() {
-        setisSplit(true)
-        setSplitTitle("")
-        setSplitAmount(0)
-        setOpen(false)
-
-    }
+    
 
     const handleClose = (event, reason) => {
         if (reason === "clickaway") {
@@ -107,6 +116,13 @@ function Chat(props) {
             });
         }
     }
+
+    const handleCheck = (event) => {
+        setSplitUsers([...splitUsers, event.target.value])
+        setSplitUsersName([...splitUsersName, event.target.name])
+        setSplitUsersPhoto([...splitUsersPhoto, event.target.id])
+    };
+
 
     async function sendSplitMsg() {
         if (splitTitle && splitAmount) { }
@@ -201,7 +217,12 @@ function Chat(props) {
             }
         );
     }
-    console.log(type);
+    // console.log(members);
+    // console.log(updatedmembers);
+    console.log(splitUsers);
+    // console.log(splitUsersName);
+    // console.log(splitUsersPhoto);
+
     return (
         <div className='chatbox'>
             <Toaster />
@@ -284,41 +305,41 @@ function Chat(props) {
 
                                             {
                                                 item.text ? (
-                                                    
-                                                        <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'scroll', zIndex: '99', minWidth: 'inherit', padding: '15px', backgroundColor: '#0073FF', borderRadius: '15px' }}>
-                                                            <a key={index} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '-3px', marginBottom: '-3px', fontSize: '13px' }}>
-                                                                {
 
-                                                                    (item.filetype === "image/png" || item.filetype === "image/jpg" || item.filetype === "image/jpeg") ? (
-                                                                        <ImageIcon style={{ marginRight: '7.5px', fontSize: '24px', color: 'white' }}></ImageIcon>
-                                                                    ) : (<></>)
-                                                                }
-                                                                {
+                                                    <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'scroll', zIndex: '99', minWidth: 'inherit', padding: '15px', backgroundColor: '#0073FF', borderRadius: '15px' }}>
+                                                        <a key={index} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '-3px', marginBottom: '-3px', fontSize: '13px' }}>
+                                                            {
 
-                                                                    (item.filetype === "application/pdf") ? (
-                                                                        <PictureAsPdfIcon sx={{ color: red[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></PictureAsPdfIcon>
-                                                                    ) : (<></>)
-                                                                }
-                                                                {
+                                                                (item.filetype === "image/png" || item.filetype === "image/jpg" || item.filetype === "image/jpeg") ? (
+                                                                    <ImageIcon style={{ marginRight: '7.5px', fontSize: '24px', color: 'white' }}></ImageIcon>
+                                                                ) : (<></>)
+                                                            }
+                                                            {
 
-                                                                    (item.filetype === "audio/mpeg") ? (
-                                                                        <LibraryMusicIcon sx={{ color: teal[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></LibraryMusicIcon>
-                                                                    ) : (<></>)
-                                                                }
-                                                                {
+                                                                (item.filetype === "application/pdf") ? (
+                                                                    <PictureAsPdfIcon sx={{ color: red[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></PictureAsPdfIcon>
+                                                                ) : (<></>)
+                                                            }
+                                                            {
 
-                                                                    (item.filetype === "video/mp4") ? (
-                                                                        <VideocamIcon color="secondary" style={{ marginRight: '7.5px', fontSize: '24px' }}></VideocamIcon>
-                                                                    ) : (<></>)
-                                                                }
-                                                                {
-                                                                    (item.filetype) ? (item.filename) : (item.text)
-                                                                }
+                                                                (item.filetype === "audio/mpeg") ? (
+                                                                    <LibraryMusicIcon sx={{ color: teal[500] }} style={{ marginRight: '7.5px', fontSize: '24px' }}></LibraryMusicIcon>
+                                                                ) : (<></>)
+                                                            }
+                                                            {
 
-                                                            </a>
-                                                        </div>
+                                                                (item.filetype === "video/mp4") ? (
+                                                                    <VideocamIcon color="secondary" style={{ marginRight: '7.5px', fontSize: '24px' }}></VideocamIcon>
+                                                                ) : (<></>)
+                                                            }
+                                                            {
+                                                                (item.filetype) ? (item.filename) : (item.text)
+                                                            }
+
+                                                        </a>
+                                                    </div>
                                                 ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} />)
-                                            
+
                                             }
 
                                             {/* {type == "text" ? <div className='message__text__box' style={{ padding: '10px', backgroundColor: '#0073FF', borderRadius: '15px', width: 'fit-content' }}>
@@ -373,6 +394,30 @@ function Chat(props) {
                                     required={true}
 
                                 />
+                                <p style={{ marginTop: '18px',color:'#828271' }}>Select Members</p>
+                                <FormGroup>
+                                    {
+                                       updatedmembers.map((item) => {
+                                        // console.log(item[0].name)
+                                            return (
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            defaultChecked
+                                                            onChange={(e) => { handleCheck(e) }}
+                                                            name={item[0].name}
+                                                            color="primary"
+                                                            
+                                                        />
+                                                    }
+                                                    label={item[0].name}
+                                                />
+                                            )
+                                        }
+                                        )
+
+                                    }
+                                </FormGroup>
 
                             </DialogContent>
                             <DialogActions>
