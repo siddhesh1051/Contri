@@ -46,6 +46,9 @@ export const Rightbar = (props) => {
     })
     let sharedArray = [];
 
+    console.log(user);
+
+
 
 
 

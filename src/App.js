@@ -88,7 +88,8 @@ function App() {
               <Leftbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} email={user.email} switchroom={roomswitch} uid={user.uid} />
               <Chat photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} uid={user.uid} />
               <Rightbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
-              {/* <Split/> */}
+              {/* <Split
+              /> */}
             </div>) : <Room roomfunc={roomfunc} photo={user.photoURL} name={user.displayName} setUser={setgetuserSignup} uid={user.uid} />
             )
         }

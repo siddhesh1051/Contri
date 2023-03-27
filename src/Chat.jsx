@@ -48,18 +48,70 @@ function Chat(props) {
     const [open, setOpen] = React.useState(true);
     const [openAdd, setOpenAdd] = React.useState(false);
 
+    const map = new Map();
+
+
     useEffect(
         () => {
-            onSnapshot(qr, (snapshot) => setmembers(snapshot.docs.map((doc) => [{ name: doc.data().name, img: doc.data().userimg }])))
+            onSnapshot(qr, (snapshot) => setupdatedmembers(snapshot.docs.map((doc) => [{ name: doc.data().name, img: doc.data().userimg }])))
             
 
         }
         , [props.roomid]);
+    useEffect(
+        () => {
+            let membersArray = Array.from(map, ([name, img]) => ({ name, img }));
+            console.log(membersArray)            
+
+        }
+        , [updatedmembers]);
+
+        updatedmembers.forEach((item) => {
+            map.set(item[0].name, item[0].img);
+        })
 
         
-        useEffect(() => {
-            setupdatedmembers(members.filter((e) => e[0].name !== props.name))
-        }, [members])
+        // useEffect(() => {
+        //     setupdatedmembers(members.filter((e) => e[0].name !== props.name))
+        // }, [members])
+
+        // let array = [...new Set(updatedmembers.map((e) => e[0].name))];
+        // console.log(array)
+
+        // array.map((e) => {
+        //     if (e !== props.name) {
+        //         map.set(e, updatedmembers.find((i) => i[0].name === e)[0].img)
+        //     }
+        // })
+
+
+        // updatedmembers&&updatedmembers.length>0&&{
+                    
+                    
+        //                 Array.from(map, ([key, value]) => {
+                            
+        //                         // setupdatedmembers([...updatedmembers, { name: key, img: value }])
+        //                         // <div key={key} className="people" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '16px', marginBottom: '12px' }}>
+        //                         //     {/* <FiberManualRecordIcon color="disabled" style={{ width: '10px', marginLeft: '29.99px', marginTop: '1px' }} /> */}
+        //                         //     <div className="imagebox" style={{ width: '36px', height: '36px', borderRadius: '100%', marginLeft: '20px' }}>
+        //                         //         <img src={value} style={{ width: '34px', height: '34px', borderRadius: '11px' }} alt="" />
+        //                         //     </div>
+        //                         //     <p style={{ color: '#B9B6B6', marginLeft: '10px', font: 'Montesterrat', fontWeight: '500', fontStyle: 'normal', fontSize: '18px', letterSpacing: '-0.035em' }}>{key}</p>
+        //                         // </div>
+        //                         console.log(key)
+        //                         console.log(value)
+
+                                
+        //                 })
+        //             }
+
+       let membersArray = Array.from(map, ([name, img]) => ({ name, img }));
+       console.log(membersArray)
+                        // console.log(updatedmembers)
+                        // setupdatedmembers(membersArray)
+                        // console.log(updatedmembers)
+                    
+               
 
            
 
@@ -347,7 +399,7 @@ function Chat(props) {
                                             {
                                                 item.text ? (
 
-                                                    <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'scroll', zIndex: '99', minWidth: 'inherit', padding: '15px', backgroundColor: '#0073FF', borderRadius: '15px' }}>
+                                                    <div className="file" style={{ border: '0px solid #616161', padding: '2px 2px', marginTop: '5px', overflowX: 'auto', zIndex: '99', minWidth: 'inherit', padding: '15px', backgroundColor: '#0073FF', borderRadius: '15px' }}>
                                                         <a key={index} href={item.text} target="_blank" className="chat__body__message" rel="noreferrer" style={{ paddingTop: '0px', textDecoration: 'none', MarginRight: '9px', marginLeft: '-3px', marginBottom: '-3px', fontSize: '13px' }}>
                                                             {
 
@@ -379,7 +431,7 @@ function Chat(props) {
 
                                                         </a>
                                                     </div>
-                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} uid={props.uid} />)
+                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} roomid={props.roomid} uid={props.uid} splitid={props.uid} />)
 
                                             }
 
@@ -438,23 +490,24 @@ function Chat(props) {
                                 <p style={{ marginTop: '18px',color:'#828271' }}>Select Members</p>
                                 <FormGroup>
                                     {
-                                       updatedmembers.map((item) => {
-                                        // console.log(item[0].img)
+                                       membersArray.map((item) => {
+                                        console.log(item)
+
                                             return (
                                                 <FormControlLabel
                                                     control={
                                                         <Checkbox
                                                             // defaultChecked
                                                             onChange={(e) => { handleCheck(e) }}
-                                                            name={item[0].name}
-                                                            itemID={item[0].id}
-                                                            id={item[0].img}
+                                                            name={item.name}
+                                                            itemID={item.id}
+                                                            id={item.img}
                                                             color="primary"
-                                                            inputProps={{'img':item[0].img}}
+                                                            inputProps={{'img':item.img}}
                                                             
                                                         />
                                                     }
-                                                    label={item[0].name}
+                                                    label={item.name}
                                                 />
                                             )
                                         }
@@ -475,7 +528,7 @@ function Chat(props) {
                     <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer', marginTop: '3px' }}><AttachmentIcon /></label>
 
                     {
-                        input || isSplit ? (<Button onClick={() => { sendMessage(); setType("text") }} style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
+                        input ? (<Button onClick={() => { sendMessage(); setType("text") }} style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
                             <SendIcon sx={{ fontSize: "21px", color: 'white' }}></SendIcon>
                         </Button>) : (<Button disabled style={{ height: '35px', marginRight: '-13px', width: '30px' }} size="small">
                             <SendIcon sx={{ fontSize: "21px" }}></SendIcon>
