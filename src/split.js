@@ -1,7 +1,7 @@
 import React from 'react'
 import './css/split.css'
 
-const split = ({splitTitle,splitAmount}) => {
+const split = ({splitTitle,splitAmount,uid}) => {
   return (
     <div style={{backgroundColor:'black'}}>
       <div className='splitBox'>
@@ -13,8 +13,12 @@ const split = ({splitTitle,splitAmount}) => {
         </div> */}
         <div className='splitAmount'>
                 <h1>{splitAmount+"/-"}</h1>
-        </div>
-        <button className='splitPay'>Pay</button>
+        </div>{
+        uid === localStorage.getItem('user')
+        ?<button className='splitPay' >Pay</button>
+        :<button className='splitPay' disabled>Pay</button>
+        
+}
       </div>
     </div>
   )

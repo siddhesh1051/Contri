@@ -86,7 +86,7 @@ function App() {
             (signup ? <Signup setSignUp={setSignUp} getuser={setgetuserSignup} /> : <Login setSignUp={setSignUp} getuser={setgetuserLogin} />) :
             (room ? (<div className="app__cont">
               <Leftbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} email={user.email} switchroom={roomswitch} uid={user.uid} />
-              <Chat photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
+              <Chat photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} uid={user.uid} />
               <Rightbar photo={user.photoURL} logout={handlelogout} name={user.displayName} roomid={room} switchroom={roomswitch} />
               {/* <Split/> */}
             </div>) : <Room roomfunc={roomfunc} photo={user.photoURL} name={user.displayName} setUser={setgetuserSignup} uid={user.uid} />

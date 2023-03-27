@@ -118,16 +118,20 @@ function Chat(props) {
     }
 
     const handleCheck = (event) => {
-        setSplitUsers([...splitUsers, event.target.value])
-        setSplitUsersName([...splitUsersName, event.target.name])
-        setSplitUsersPhoto([...splitUsersPhoto, event.target.id])
+        // console.log(event.target.id)
+        // setSplitUsers([...splitUsers, event.target.value])
+        event.target.checked ? setSplitUsers([...splitUsers, event.target.value]) : setSplitUsers(splitUsers.filter((e) => e !== event.target.value))
+        event.target.checked ? setSplitUsersName([...splitUsersName, event.target.name]) : setSplitUsersName(splitUsersName.filter((e) => e !== event.target.name))
+        event.target.checked ? setSplitUsersPhoto([...splitUsersPhoto, event.target.id]) : setSplitUsersPhoto(splitUsersPhoto.filter((e) => e !== event.target.id))
     };
 
 
     async function sendSplitMsg() {
-        if (splitTitle && splitAmount) { }
+        if (splitTitle && splitAmount && splitUsersName.length!==0 && splitUsersPhoto.length!==0 ) { 
         const title = splitTitle;
         const amount = splitAmount;
+        const usersname = splitUsersName;
+        const usersphoto = splitUsersPhoto;
         // setSplitTitle("")
         // setSplitAmount(0)
         await addDoc(collection(db, props.roomid), {
@@ -136,16 +140,52 @@ function Chat(props) {
             splitTitle: title,
             splitAmount: amount,
             userimg: props.photo,
-            timestamp: serverTimestamp()
+            timestamp: serverTimestamp(),
+            splitUsersName: usersname,
+            splitUsersPhoto: usersphoto,
             // splitUsers: splitUsers,
-            // splitUsersName: splitUsersName,
+
         });
         setisSplit(true)
         setSplitTitle("")
         setSplitAmount()
+        setSplitUsers([])
+        setSplitUsersName([])
+        setSplitUsersPhoto([])
         handleCloseAdd()
 
+    }
+    else if(splitUsersName.length===0 && splitUsersPhoto.length===0){
+        toast.error('Please select atleast one user', {
+            duration: 1200,
+            position: 'top-center',
+            style: {    
+                fontFamily: 'Poppins',
+                fontSize: '12.5px',
+                color: '#fff',
+                background: '#f44336',
+                borderRadius: '5px',
+                padding: '10px',
+                boxShadow: '0 0 10px rgba(0,0,0,0.2)',
+            }
+        })
+    }
 
+    else if(splitTitle==="" || splitAmount===""){
+        toast.error('Please fill all the fields', {
+            duration: 1200,
+            position: 'top-center',
+            style: {
+                fontFamily: 'Poppins',
+                fontSize: '12.5px',
+                color: '#fff',
+                background: '#f44336',
+                borderRadius: '5px',
+                padding: '10px',
+                boxShadow: '0 0 10px rgba(0,0,0,0.2)',
+            }
+        })
+    }
 
     }
     function updateScroll() {
@@ -217,9 +257,10 @@ function Chat(props) {
             }
         );
     }
+    // console.log(props.uid)
     // console.log(members);
     // console.log(updatedmembers);
-    console.log(splitUsers);
+    // console.log(splitUsers);
     // console.log(splitUsersName);
     // console.log(splitUsersPhoto);
 
@@ -338,7 +379,7 @@ function Chat(props) {
 
                                                         </a>
                                                     </div>
-                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} />)
+                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} uid={props.uid} />)
 
                                             }
 
@@ -365,7 +406,7 @@ function Chat(props) {
                     {/* <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'7px', marginRight:'2px' }}><EmojiEmotionsOutlined /></label> */}
 
                     <input value={input} type="text" placeholder='Type a message...' onKeyPress={(e) => handleEnterButton(e)} onChange={inputhandler} />
-                    <button className='splitBtn' style={{ width: 'fit-content', padding: '10px', borderRadius: '100px', marginRight: '20px', backgroundColor: '#c3edff', border: 'none' }} onClick={() => { handleClickOpenAdd() }}>Split</button>
+                    <button className='splitBtn' style={{ width: '200px',height:"40px", padding: '10px', borderRadius: '100px', marginRight: '20px', backgroundColor: '#c3edff', border: 'none',cursor:'pointer' }} onClick={() => { handleClickOpenAdd() }}>Split Expense</button>
                     <Dialog PaperProps={{
                         sx: {
                             width: "100%",
@@ -398,15 +439,18 @@ function Chat(props) {
                                 <FormGroup>
                                     {
                                        updatedmembers.map((item) => {
-                                        // console.log(item[0].name)
+                                        // console.log(item[0].img)
                                             return (
                                                 <FormControlLabel
                                                     control={
                                                         <Checkbox
-                                                            defaultChecked
+                                                            // defaultChecked
                                                             onChange={(e) => { handleCheck(e) }}
                                                             name={item[0].name}
+                                                            itemID={item[0].id}
+                                                            id={item[0].img}
                                                             color="primary"
+                                                            inputProps={{'img':item[0].img}}
                                                             
                                                         />
                                                     }

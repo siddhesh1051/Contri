@@ -6,9 +6,9 @@
     gap: 10px;
     background-color: #292929;
     color: #fff;
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 10px 20px;
-    overflow: scroll;
+    overflow: auto;
     
 
 }
