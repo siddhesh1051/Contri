@@ -61,7 +61,7 @@ function Chat(props) {
     useEffect(
         () => {
             let membersArray = Array.from(map, ([name, img]) => ({ name, img }));
-            console.log(membersArray)            
+            // console.log(membersArray)            
 
         }
         , [updatedmembers]);
@@ -106,7 +106,7 @@ function Chat(props) {
         //             }
 
        let membersArray = Array.from(map, ([name, img]) => ({ name, img }));
-       console.log(membersArray)
+    //    console.log(membersArray)
                         // console.log(updatedmembers)
                         // setupdatedmembers(membersArray)
                         // console.log(updatedmembers)
@@ -185,6 +185,7 @@ function Chat(props) {
         const usersname = splitUsersName;
         const usersphoto = splitUsersPhoto;
         const splitBy = props.name;
+        const usersPaid = 0;
         // setSplitTitle("")
         // setSplitAmount(0)
         await addDoc(collection(db, props.roomid), {
@@ -197,6 +198,7 @@ function Chat(props) {
             splitUsersName: usersname,
             splitUsersPhoto: usersphoto,
             splitBy: splitBy,
+            usersPaid: usersPaid,
             // splitUsers: splitUsers,
 
         });
@@ -495,7 +497,7 @@ function Chat(props) {
                                 <FormGroup>
                                     {
                                        membersArray.map((item) => {
-                                        console.log(item)
+                                        // console.log(item)
 
                                             return (
                                                 <FormControlLabel

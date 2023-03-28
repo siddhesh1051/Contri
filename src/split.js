@@ -1,6 +1,6 @@
 import { LinearProgress } from '@mui/material';
 import { fontWeight } from '@mui/system';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import './css/split.css'
@@ -8,9 +8,10 @@ import { db } from './firebase';
 
 const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
+  const [splitUsersName, setSplitUsersName] = useState([])
   const [splitUsersPhoto, setSplitUsersPhoto] = useState([])
   const [splitUsers, setSplitUsers] = useState([])
-  const [usersPaid, setUsersPaid] = useState(1)
+  const [usersPaid, setUsersPaid] = useState(0)
   const [seeUsers, setseeUsers] = useState([])
   const [splitUsersCount, setSplitUsersCount] = useState(0)
 
@@ -34,6 +35,53 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   }, [splitUsers])
 
   useEffect(() => {
+    setSplitUsersName(splitUsers.map((item) => {
+      if (item.splitTitle === splitTitle && item.splitAmount === splitAmount) {
+        return item.splitUsersName
+
+      }
+      else {
+        return null
+      }
+    }))
+
+    setSplitUsersName(splitUsersName => splitUsersName.filter(item => item !== null))
+    
+
+  }, [splitUsers])
+
+  useEffect(() => {
+    
+      setUsersPaid(splitUsers.map((item) => {
+      if (item.splitTitle === splitTitle && item.splitAmount === splitAmount) {
+        return item.usersPaid
+
+      }
+      else {
+        return null
+      }
+    }))
+
+    setUsersPaid(splitUsersName => splitUsersName.filter(item => item !== null))
+    
+
+  }, [splitUsers])
+  
+  const docref = doc(db, roomid, "3BlsWPkI2dphZFQ6oVdo")
+  // useEffect(() => {
+  //   console.log(usersPaid)
+  //   updateDoc(docref, {
+  //     usersPaid: usersPaid[0]
+  //     });
+  //   console.log(usersPaid)
+
+
+    
+
+  // }, [usersPaid])
+
+
+  useEffect(() => {
     setSplitUsersCount(splitUsersPhoto.map((item) => {
       if (item !== null) {
         return item.length
@@ -48,8 +96,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   }, [splitUsersPhoto])
 
 
-  console.log(splitUsersPhoto)
-  console.log(splitUsersCount[0])
+  // console.log(splitUsersPhoto)
+  // console.log(splitUsersCount[0])
 
 
 
@@ -68,15 +116,24 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     }))
   }, [splitUsers])
 
-  console.log(seeUsers)
+  // console.log(seeUsers)
+      // console.log(splitUsers)
+      // console.log(splitUsersName)
+
 
   // console.log(splitUsersCount)
 
   const handlePay = () => {
-    // console.log(splitUsers)
-    // console.log(splitUsersPhoto)
+    updateDoc(docref, {
+      usersPaid: usersPaid[0] + 1
+    });
+    
+    console.log(splitUsers)
+    console.log(usersPaid)
+    usersPaid[0] = usersPaid[0] + 1
+    console.log(usersPaid)
   }
-
+  
 
   return (
     <div style={{ backgroundColor: 'black' }}>
@@ -91,8 +148,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
           <h1 ><span style={{fontFamily:"sans-serif", fontWeight:'200'}}>₹ </span>{+ Math.round(splitAmount/splitUsersCount[0] * 100) / 100}</h1>
         </div>
         <div className='progressBarDiv'>
-        <LinearProgress className='progressBar' variant="determinate" value={(usersPaid* 100)/splitUsersCount} />
-        <p className='countNum'>{usersPaid}/{splitUsersCount} paid</p>
+        <LinearProgress className='progressBar' variant="determinate" value={(usersPaid[0]* 100)/splitUsersCount} />
+        <p className='countNum'>{usersPaid[0]}/{splitUsersCount} paid</p>
         </div>
         <div className='splitUsersImg'>
           <div className='splitAvatarDiv'> 
@@ -116,10 +173,13 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
         {
           
           seeUsers.map((item) => {
-            if (item !== null && item !== username )  return <button className='splitPay' onClick={handlePay}>Pay</button>
-            else if (item !== null && item === username) return <button className='splitPayDisabled' disabled>Pay</button>
-                else 
-              return null
+            // console.log(splitUsersName[0])
+            // console.log()
+            if (item !== null && item !== username && splitUsersName[0].includes(username) )  return <button className='splitPay' onClick={handlePay}>Pay</button>
+            else if(item !== null && !splitUsersName[0].includes(username)) return <button className='splitPayDisabled' disabled>Pay</button>
+            else if(item !== null && item===username ) {
+              return <button className='splitPayDisabled' disabled>Pay</button>}
+              // 
             
           })
           // seeUsers.map((item) => {

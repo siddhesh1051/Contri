@@ -1,6 +1,6 @@
 .splitBox{
-    width: 160px;
-    height: 190px;
+    min-width: 160px;
+    min-height: 190px;
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -54,7 +54,7 @@
 }
 .splitPay{
     width: 100%;
-    height: 100%;
+    height: 40px;
     display: flex;
     justify-content: center;
     justify-self: center;
@@ -62,15 +62,14 @@
     font-size: 15px;
     font-weight: bold;
     border-radius: 50px;
-    background-color: #004a77;
+    background-color: #025d95;
     color: #c3edff;
     border: none;
     cursor: pointer;
 }
 .splitPayDisabled{
     width: 100%;
-    flex: 1;
-    height: 100%;
+    height: 40px;
     display: flex;
     justify-content: center;
     justify-self: center;
@@ -78,10 +77,10 @@
     font-size: 15px;
     font-weight: bold;
     border-radius: 50px;
-    background-color: #9db2c0;
-    color: #1b2023;
+    background-color: #002a45;
+    color: #234e68;
     border: none;
-    cursor: pointer;
+    cursor: not-allowed;
 }
 
 .splitAvatarDiv{
@@ -114,6 +113,7 @@
 
 .progressBarDiv{
     flex: 0.5;
+    gap: 10px;
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -131,7 +131,7 @@
     flex: 1;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
     align-items: center;
     font-size: 12px;
     font-weight: bold;
@@ -139,7 +139,7 @@
 }
 
 .splitPayDiv{
-    flex: 1.5;
+    flex: 3;
     width: 100%;
     display: flex;
     align-items: center;
