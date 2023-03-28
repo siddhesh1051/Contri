@@ -1,4 +1,5 @@
 import { LinearProgress } from '@mui/material';
+import { fontWeight } from '@mui/system';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
@@ -9,7 +10,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
   const [splitUsersPhoto, setSplitUsersPhoto] = useState([])
   const [splitUsers, setSplitUsers] = useState([])
-  const [usersPaid, setUsersPaid] = useState(0)
+  const [usersPaid, setUsersPaid] = useState(1)
   const [seeUsers, setseeUsers] = useState([])
   const [splitUsersCount, setSplitUsersCount] = useState(0)
 
@@ -87,12 +88,10 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
                 <p>Split Description</p>
         </div> */}
         <div className='splitAmount'>
-          <h1>{"₹ " + Math.round(splitAmount/splitUsersCount[0] * 100) / 100}</h1>
+          <h1 ><span style={{fontFamily:"sans-serif", fontWeight:'200'}}>₹ </span>{+ Math.round(splitAmount/splitUsersCount[0] * 100) / 100}</h1>
         </div>
         <div className='progressBarDiv'>
-          
-        <LinearProgress className='progressBar' variant="determinate" value={Math.round((100 / 3) * 2 )} />
-        
+        <LinearProgress className='progressBar' variant="determinate" value={(usersPaid* 100)/splitUsersCount} />
         <p className='countNum'>{usersPaid}/{splitUsersCount} paid</p>
         </div>
         <div className='splitUsersImg'>
