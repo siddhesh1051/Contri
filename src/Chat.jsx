@@ -184,6 +184,7 @@ function Chat(props) {
         const amount = splitAmount;
         const usersname = splitUsersName;
         const usersphoto = splitUsersPhoto;
+        const splitBy = props.name;
         // setSplitTitle("")
         // setSplitAmount(0)
         await addDoc(collection(db, props.roomid), {
@@ -195,6 +196,7 @@ function Chat(props) {
             timestamp: serverTimestamp(),
             splitUsersName: usersname,
             splitUsersPhoto: usersphoto,
+            splitBy: splitBy,
             // splitUsers: splitUsers,
 
         });
@@ -367,6 +369,8 @@ function Chat(props) {
 
                                                     {/* {<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} />} */}
 
+
+
                                                 </>
                                             }
 
@@ -431,7 +435,7 @@ function Chat(props) {
 
                                                         </a>
                                                     </div>
-                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} roomid={props.roomid} uid={props.uid} splitid={props.uid} />)
+                                                ) : (<Split splitTitle={item.splitTitle} splitAmount={item.splitAmount} roomid={props.roomid} uid={props.uid} splitid={props.uid} username={props.name} />)
 
                                             }
 
@@ -502,12 +506,12 @@ function Chat(props) {
                                                             name={item.name}
                                                             itemID={item.id}
                                                             id={item.img}
-                                                            color="primary"
+                                                            color="primary"     
                                                             inputProps={{'img':item.img}}
                                                             
                                                         />
                                                     }
-                                                    label={item.name}
+                                                    label={item.name===props.name?item.name + " (You)":item.name}
                                                 />
                                             )
                                         }
