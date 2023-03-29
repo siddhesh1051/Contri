@@ -1,8 +1,9 @@
 import { LinearProgress } from '@mui/material';
 import { fontWeight } from '@mui/system';
-import { collection, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
+import { collection, doc, documentId, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import './css/split.css'
 import { db } from './firebase';
 
@@ -14,6 +15,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   const [usersPaid, setUsersPaid] = useState(0)
   const [seeUsers, setseeUsers] = useState([])
   const [docId, setdocId] = useState()
+  const [finaldocId, setFinaldocId] = useState()
   const [splitUsersCount, setSplitUsersCount] = useState(0)
 
   const qr = query(collection(db, roomid), orderBy('splitAmount', 'asc'));
@@ -158,30 +160,52 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
   // console.log(splitUsersCount)
 
-  const handlePay = () => {
-    let n = docId.length-1;
-    docId[n-1].splitUsersName.map((item) => {
-      console.log(item)
-      if (item === username) {
-        return item
+  const handlePay = async () => {
+  
+    setFinaldocId(docId.map((item) => {
+      if (item.splitTitle === splitTitle && item.splitAmount === splitAmount) {
+        return item.docId
       }
-      else {
-        return null
-      }
-    })
+    
+    }))
+
+    setFinaldocId(finaldocId => finaldocId.filter(item => item !== undefined))
+
+    console.log(finaldocId[0])
 
 
-    console.log(docId[n-1].docId)
-    const docref = doc(db, roomid, docId[n-1]?.docId)
+
+    let n = docId.length;
     
-    updateDoc(docref, {
-      usersPaid: usersPaid[0] + 1
-    });
+    // docId.sort((a, b) => (a.splitAmount > b.splitAmount) ? 1 : -1)
+    // console.log(docId)
+
+    const docref = doc(db, roomid, finaldocId[0])
+    await updateDoc(docref, {
+     usersPaid: usersPaid[0]<splitUsersCount[0]?usersPaid[0] + 1:usersPaid[0]
+     
+
+    }).then(() => {
+      if(usersPaid[0]<splitUsersCount[0]){
+        toast.success('Payment Successful')
+      }
+      else{
+        toast.error('All Payments Done') 
+      }
+      }).catch((error) => {
+        toast.error('Payment Failed')
+        });
     
-    console.log(splitUsers)
+    // console.log(splitUsers)
     console.log(usersPaid)
-    usersPaid[0] = usersPaid[0] + 1
+    // usersPaid[0] = usersPaid[0] + 1
     console.log(usersPaid)
+
+
+    
+      
+
+  
   }
   
 
