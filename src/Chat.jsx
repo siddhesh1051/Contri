@@ -15,11 +15,12 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import { red, teal } from '@mui/material/colors';
 import AttachmentIcon from '@mui/icons-material/Attachment';
-// import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import SendIcon from '@mui/icons-material/Send';
 import './css/Responsive.css'
 import ReactTimeAgo from 'react-time-ago'
 import Split from './split';
+import cryptoRandomString from 'crypto-random-string';
+
 
 
 
@@ -37,6 +38,8 @@ function Chat(props) {
     const [splitUsers, setSplitUsers] = useState([])
     const [splitUsersName, setSplitUsersName] = useState([])
     const [splitUsersPhoto, setSplitUsersPhoto] = useState([])
+    const docId = cryptoRandomString({length: 10, type: 'base64'});
+
 
     // const q = query(collection(db, "messages"), orderBy('timestamp', 'asc'));
     const qr = query(collection(db, props.roomid), orderBy('timestamp', 'asc'));
@@ -189,6 +192,7 @@ function Chat(props) {
         // setSplitTitle("")
         // setSplitAmount(0)
         await addDoc(collection(db, props.roomid), {
+            id: docId,
             name: props.name,
             // text: msg,
             splitTitle: title,

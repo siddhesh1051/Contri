@@ -13,6 +13,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   const [splitUsers, setSplitUsers] = useState([])
   const [usersPaid, setUsersPaid] = useState(0)
   const [seeUsers, setseeUsers] = useState([])
+  const [docId, setdocId] = useState()
   const [splitUsersCount, setSplitUsersCount] = useState(0)
 
   const qr = query(collection(db, roomid), orderBy('splitAmount', 'asc'));
@@ -21,7 +22,35 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     onSnapshot(qr, (snapshot) => {
       setSplitUsers(snapshot.docs.map((doc) => doc.data()))
     })
+
+    
   }, [roomid])
+  useEffect(() => {
+    onSnapshot(qr, (snapshot) => {
+      setdocId(snapshot.docs.map((doc) => ({docId: doc.id, ...doc.data()})))
+    })
+
+    
+  }, [roomid,splitUsers])
+
+  console.log(splitUsers)
+
+  // useEffect(() => {
+
+  //   setdocId(splitUsers.map((item) => {
+  //     if (item.splitTitle === splitTitle && item.splitAmount === splitAmount) {
+  //       return item.id
+  //     }
+  //     else {
+  //       return null
+  //     }
+
+  //   }))
+  //     setdocId(docId => docId.filter(item => item !== null))
+
+  // }, [splitUsers])
+  // console.log(docId[0]?.docId)
+
 
   useEffect(() => {
     setSplitUsersPhoto(splitUsers.map((item) => {
@@ -33,6 +62,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
       }
     }))
   }, [splitUsers])
+
+  
 
   useEffect(() => {
     setSplitUsersName(splitUsers.map((item) => {
@@ -66,8 +97,9 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     
 
   }, [splitUsers])
+
   
-  const docref = doc(db, roomid, "3BlsWPkI2dphZFQ6oVdo")
+  // const docref = doc(db, roomid, "3BlsWPkI2dphZFQ6oVdo")
   // useEffect(() => {
   //   console.log(usersPaid)
   //   updateDoc(docref, {
@@ -93,7 +125,10 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
     setSplitUsersCount(splitUsersCount => splitUsersCount.filter(item => item !== null))
 
+
   }, [splitUsersPhoto])
+
+
 
 
   // console.log(splitUsersPhoto)
@@ -124,6 +159,21 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   // console.log(splitUsersCount)
 
   const handlePay = () => {
+    let n = docId.length-1;
+    docId[n-1].splitUsersName.map((item) => {
+      console.log(item)
+      if (item === username) {
+        return item
+      }
+      else {
+        return null
+      }
+    })
+
+
+    console.log(docId[n-1].docId)
+    const docref = doc(db, roomid, docId[n-1]?.docId)
+    
     updateDoc(docref, {
       usersPaid: usersPaid[0] + 1
     });

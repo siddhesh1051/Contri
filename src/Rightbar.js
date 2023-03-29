@@ -46,7 +46,7 @@ export const Rightbar = (props) => {
     })
     let sharedArray = [];
 
-    console.log(user);
+    // console.log(user);
 
 
 
@@ -95,7 +95,7 @@ export const Rightbar = (props) => {
                     message&&message.length>0&&message.map((item)=>{
 
                     
-                    console.log(sharedArray)
+                    // console.log(sharedArray)
                         {   
                             //image
                             if((item.filetype==="image/jpeg" || item.filetype==="image/png" || item.filetype==="image/jpg")&& !sharedArray.includes(item.text)){
