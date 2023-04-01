@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import './css/split.css'
 import { db } from './firebase';
+import logo from './ico/logo.png'
 
 const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
@@ -19,6 +20,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   const [isDisabled, setIsDisabled] = useState(false)
   const [splitUsersCount, setSplitUsersCount] = useState(0)
   const [splitBy, setSplitBy] = useState([])
+  const [load, setLoad] = useState(false)
 
 
   const qr = query(collection(db, roomid), orderBy('splitAmount', 'asc'));
@@ -28,17 +30,22 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
       setSplitUsers(snapshot.docs.map((doc) => doc.data()))
     })
 
-    
+
   }, [roomid])
+
+  useEffect(() => {
+    setLoad(!true)
+  }, [roomid])
+
   useEffect(() => {
     onSnapshot(qr, (snapshot) => {
-      setdocId(snapshot.docs.map((doc) => ({docId: doc.id, ...doc.data()})))
+      setdocId(snapshot.docs.map((doc) => ({ docId: doc.id, ...doc.data() })))
     })
 
-    
-  }, [roomid,splitUsers])
 
- // console.log(splitUsers)
+  }, [roomid, splitUsers])
+
+  // console.log(splitUsers)
 
   // useEffect(() => {
 
@@ -68,7 +75,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     }))
   }, [splitUsers])
 
-  
+
 
   useEffect(() => {
     setSplitUsersName(splitUsers.map((item) => {
@@ -82,13 +89,13 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     }))
 
     setSplitUsersName(splitUsersName => splitUsersName.filter(item => item !== null))
-    
+
 
   }, [splitUsers])
 
   useEffect(() => {
-    
-      setUsersPaid(splitUsers.map((item) => {
+
+    setUsersPaid(splitUsers.map((item) => {
       if (item.splitTitle === splitTitle && item.splitAmount === splitAmount) {
         return item.usersPaid
 
@@ -99,12 +106,12 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     }))
 
     setUsersPaid(splitUsersName => splitUsersName.filter(item => item !== null))
-    
-    
+
+
 
   }, [splitUsers])
 
-  
+
   // const docref = doc(db, roomid, "3BlsWPkI2dphZFQ6oVdo")
   // useEffect(() => {
   //   console.log(usersPaid)
@@ -114,7 +121,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   //   console.log(usersPaid)
 
 
-    
+
 
   // }, [usersPaid])
 
@@ -158,8 +165,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
 
 
-  
-  
+
+
 
   useEffect(() => {
     setseeUsers(splitUsers.map((item) => {
@@ -174,35 +181,82 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     setSplitBy(seeUsers[0])
   }, [splitUsers])
 
-      //  console.log(splitBy)
-      // console.log(splitUsers)
-      // console.log(splitUsersName)
-      // console.log(username)
+  //  console.log(splitBy)
+  // console.log(splitUsers)
+  // console.log(splitUsersName)
+  // console.log(username)
 
 
   // console.log(splitUsersCount)
-  
+  const laodscript = (src) => {
+    return new Promise(resolve => {
+      const script = document.createElement('script')
+      script.src = src
 
-  async function handlePay() {
+      script.onload = () => {
+        resolve(true)
+      }
+      script.onerror = () => {
+        resolve(false)
+      }
+
+      document.body.appendChild(script)
+    })
+  }
+
+
+  const handleRazorpay = async (docref) => {
+
+    const res = await laodscript('https://checkout.razorpay.com/v1/checkout.js')
+    if (!res) {
+      alert('Razorpay SDK failed to load. Are you online?')
+      return
+    }
+
+    const options = {
+      key: 'rzp_test_D4QKUfd4DWNLdV',
+      amount: (Math.round(splitAmount / splitUsersCount[0] * 100) / 100) * 100,
+      currency: 'INR',
+      name: 'Talkr',
+      description: 'Thank you for using Talkr',
+      image: logo,
+      handler: function (response) {
+        updateDoc(docref, {
+          usersPaid: usersPaid[0] + 1
+        });
+        toast.success('Payment Successful');
+        setIsDisabled(true)
+      },
+      prefill: {
+        name: username,
+        email: 'test@gmail.com',
+        contact: '9999999999'
+      },
+      theme: {
+        color: '#0156BD'
+      }
+    }
+    const paymentObject = new window.Razorpay(options)
+    paymentObject.open()
+
+
+  }
+
+  const handlePay = async () => {
     const finaldocId = docId
       .filter(item => item.splitTitle === splitTitle && item.splitAmount === splitAmount)
       .map(item => item.docId);
-      
+
     if (finaldocId.length === 0) {
       console.log('Error: docId not found');
       return;
     }
-  
-    const docref = doc(db, roomid, finaldocId[0]);
-    
     try {
-      await updateDoc(docref, {
-        usersPaid: usersPaid[0] < splitUsersCount[0] ? usersPaid[0] + 1 : usersPaid[0]
-      });
-      
+
+      const docref = doc(db, roomid, finaldocId[0]);
+
       if (usersPaid[0] < splitUsersCount[0]) {
-        toast.success('Payment Successful');
-        setIsDisabled(true);
+        await handleRazorpay(docref);
       } else {
         toast.error('All Payments Done');
       }
@@ -210,12 +264,11 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
       console.log('Payment Failed', error);
       toast.error('Payment Failed');
     }
-  
+
     console.log(usersPaid);
   }
-  
-  
-  
+
+
 
   return (
     <div style={{ backgroundColor: 'black' }}>
@@ -227,14 +280,14 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
                 <p>Split Description</p>
         </div> */}
         <div className='splitAmount'>
-          <h1 ><span style={{fontFamily:"sans-serif", fontWeight:'200'}}>₹ </span>{+ Math.round(splitAmount/splitUsersCount[0] * 100) / 100}</h1>
+          <h1 ><span style={{ fontFamily: "sans-serif", fontWeight: '200' }}>₹ </span>{Math.round(splitAmount / splitUsersCount[0] * 100) / 100}</h1>
         </div>
         <div className='progressBarDiv'>
-        <LinearProgress className='progressBar' variant="determinate" value={((splitUsersName[0]?.includes(splitBy)?usersPaid[0]+1:usersPaid[0])* 100)/splitUsersCount} />
-        <p className='countNum'>{splitUsersName[0]?.includes(splitBy)?usersPaid[0]+1:usersPaid[0]}/{splitUsersCount} paid</p>
+          <LinearProgress className='progressBar' variant="determinate" value={((splitUsersName[0]?.includes(seeUsers[0]) ? usersPaid[0] + 1 : usersPaid[0]) * 100) / splitUsersCount} />
+          <p className='countNum'>{splitUsersName[0]?.includes(seeUsers[0]) ? usersPaid[0] + 1 : usersPaid[0]}/{splitUsersCount} paid</p>
         </div>
         <div className='splitUsersImg'>
-          <div className='splitAvatarDiv'> 
+          <div className='splitAvatarDiv'>
             {
               splitUsersPhoto.map((item) => {
                 if (item !== null) {
@@ -249,39 +302,40 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
             }
           </div>
-          
+
         </div>
         <div className='splitPayDiv'>
-        {
-          
-          seeUsers.map((item) => {
-            // console.log(splitUsersName[0])
-            // console.log()
-            if (item !== null && item !== username && splitUsersName[0].includes(username) )  return <button className='splitPay' onClick={handlePay} disabled={isDisabled}>Pay</button>
-            else if(item !== null && !splitUsersName[0].includes(username)) return <button className='splitPayDisabled' disabled>Pay</button>
-            else if(item !== null && item===username ) {
-              return <button className='splitPayDisabled' disabled>Pay</button>}
+          {
+
+            seeUsers.map((item) => {
+              // console.log(splitUsersName[0])
+              // console.log()
+              if (item !== null && item !== username && splitUsersName[0].includes(username)) return <button className='splitPay' onClick={handlePay} disabled={isDisabled}>Pay</button>
+              else if (item !== null && !splitUsersName[0].includes(username)) return <button className='splitPayDisabled' disabled>Pay</button>
+              else if (item !== null && item === username) {
+                return <button className='splitPayDisabled' disabled>Pay</button>
+              }
               // 
-            
-          })
-          // seeUsers.map((item) => {
-          //   console.log(item)
-          //   if (item !== null) {
-          //     return item.map((item) => {
-          //       return <button className='splitPay' onClick={handlePay}>Pay</button>
-          //     })
-          //   }
-          //   else {
-          //     return null
-          //   }
-          // })
+
+            })
+            // seeUsers.map((item) => {
+            //   console.log(item)
+            //   if (item !== null) {
+            //     return item.map((item) => {
+            //       return <button className='splitPay' onClick={handlePay}>Pay</button>
+            //     })
+            //   }
+            //   else {
+            //     return null
+            //   }
+            // })
 
 
-          // ?<button className='splitPay' onClick={handlePay}>Pay</button>
-          // :<button className='splitPayDisabled' disabled>Pay</button>
-          
+            // ?<button className='splitPay' onClick={handlePay}>Pay</button>
+            // :<button className='splitPayDisabled' disabled>Pay</button>
 
-        }
+
+          }
 
         </div>
       </div>
