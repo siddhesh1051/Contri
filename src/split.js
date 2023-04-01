@@ -16,6 +16,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   const [seeUsers, setseeUsers] = useState([])
   const [docId, setdocId] = useState()
   const [finaldocId, setFinaldocId] = useState()
+  const [isDisabled, setIsDisabled] = useState(false)
   const [splitUsersCount, setSplitUsersCount] = useState(0)
 
   const qr = query(collection(db, roomid), orderBy('splitAmount', 'asc'));
@@ -35,7 +36,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     
   }, [roomid,splitUsers])
 
-  console.log(splitUsers)
+ // console.log(splitUsers)
 
   // useEffect(() => {
 
@@ -130,6 +131,21 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
   }, [splitUsersPhoto])
 
+  useEffect(() => {
+    setSplitUsersCount(splitUsersPhoto.map((item) => {
+      if (item !== null) {
+        return item.length
+      }
+      else {
+        return null
+      }
+    }))
+
+    setSplitUsersCount(splitUsersCount => splitUsersCount.filter(item => item !== null))
+
+
+  }, [splitUsersPhoto])
+
 
 
 
@@ -153,60 +169,47 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     }))
   }, [splitUsers])
 
-  // console.log(seeUsers)
+ // console.log(seeUsers)
       // console.log(splitUsers)
       // console.log(splitUsersName)
+      // console.log(username)
 
 
   // console.log(splitUsersCount)
-
-  const handlePay = async () => {
   
-    setFinaldocId(docId.map((item) => {
-      if (item.splitTitle === splitTitle && item.splitAmount === splitAmount) {
-        return item.docId
-      }
-    
-    }))
 
-    setFinaldocId(finaldocId => finaldocId.filter(item => item !== undefined))
-
-    console.log(finaldocId[0])
-
-
-
-    let n = docId.length;
-    
-    // docId.sort((a, b) => (a.splitAmount > b.splitAmount) ? 1 : -1)
-    // console.log(docId)
-
-    const docref = doc(db, roomid, finaldocId[0])
-    await updateDoc(docref, {
-     usersPaid: usersPaid[0]<splitUsersCount[0]?usersPaid[0] + 1:usersPaid[0]
-     
-
-    }).then(() => {
-      if(usersPaid[0]<splitUsersCount[0]){
-        toast.success('Payment Successful')
-      }
-      else{
-        toast.error('All Payments Done') 
-      }
-      }).catch((error) => {
-        toast.error('Payment Failed')
-        });
-    
-    // console.log(splitUsers)
-    console.log(usersPaid)
-    // usersPaid[0] = usersPaid[0] + 1
-    console.log(usersPaid)
-
-
-    
+  async function handlePay() {
+    const finaldocId = docId
+      .filter(item => item.splitTitle === splitTitle && item.splitAmount === splitAmount)
+      .map(item => item.docId);
       
-
+    if (finaldocId.length === 0) {
+      console.log('Error: docId not found');
+      return;
+    }
   
+    const docref = doc(db, roomid, finaldocId[0]);
+    
+    try {
+      await updateDoc(docref, {
+        usersPaid: usersPaid[0] < splitUsersCount[0] ? usersPaid[0] + 1 : usersPaid[0]
+      });
+      
+      if (usersPaid[0] < splitUsersCount[0]) {
+        toast.success('Payment Successful');
+        setIsDisabled(true);
+      } else {
+        toast.error('All Payments Done');
+      }
+    } catch (error) {
+      console.log('Payment Failed', error);
+      toast.error('Payment Failed');
+    }
+  
+    console.log(usersPaid);
   }
+  
+  
   
 
   return (
@@ -222,8 +225,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
           <h1 ><span style={{fontFamily:"sans-serif", fontWeight:'200'}}>₹ </span>{+ Math.round(splitAmount/splitUsersCount[0] * 100) / 100}</h1>
         </div>
         <div className='progressBarDiv'>
-        <LinearProgress className='progressBar' variant="determinate" value={(usersPaid[0]* 100)/splitUsersCount} />
-        <p className='countNum'>{usersPaid[0]}/{splitUsersCount} paid</p>
+        <LinearProgress className='progressBar' variant="determinate" value={((splitUsersName[0]?.includes(username)?usersPaid[0]+1:usersPaid[0])* 100)/splitUsersCount} />
+        <p className='countNum'>{splitUsersName[0]?.includes(username)?usersPaid[0]+1:usersPaid[0]?usersPaid[0]+1:usersPaid[0]}/{splitUsersCount} paid</p>
         </div>
         <div className='splitUsersImg'>
           <div className='splitAvatarDiv'> 
@@ -249,7 +252,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
           seeUsers.map((item) => {
             // console.log(splitUsersName[0])
             // console.log()
-            if (item !== null && item !== username && splitUsersName[0].includes(username) )  return <button className='splitPay' onClick={handlePay}>Pay</button>
+            if (item !== null && item !== username && splitUsersName[0].includes(username) )  return <button className='splitPay' onClick={handlePay} disabled={isDisabled}>Pay</button>
             else if(item !== null && !splitUsersName[0].includes(username)) return <button className='splitPayDisabled' disabled>Pay</button>
             else if(item !== null && item===username ) {
               return <button className='splitPayDisabled' disabled>Pay</button>}

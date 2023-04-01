@@ -147,3 +147,19 @@
     font-weight: bold;
     
 }
+
+.splitPay:disabled{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 50px;
+    background-color: #002a45;
+    color: #4f565b;
+    border: none;
+    cursor: not-allowed;
+}
