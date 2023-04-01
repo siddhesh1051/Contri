@@ -18,6 +18,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
   const [finaldocId, setFinaldocId] = useState()
   const [isDisabled, setIsDisabled] = useState(false)
   const [splitUsersCount, setSplitUsersCount] = useState(0)
+  const [splitBy, setSplitBy] = useState([])
+
 
   const qr = query(collection(db, roomid), orderBy('splitAmount', 'asc'));
 
@@ -98,6 +100,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
     setUsersPaid(splitUsersName => splitUsersName.filter(item => item !== null))
     
+    
 
   }, [splitUsers])
 
@@ -167,9 +170,11 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
         return null
       }
     }))
+    setseeUsers(seeUsers => seeUsers.filter(item => item !== null))
+    setSplitBy(seeUsers[0])
   }, [splitUsers])
 
- // console.log(seeUsers)
+       console.log(splitBy)
       // console.log(splitUsers)
       // console.log(splitUsersName)
       // console.log(username)
@@ -225,8 +230,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
           <h1 ><span style={{fontFamily:"sans-serif", fontWeight:'200'}}>₹ </span>{+ Math.round(splitAmount/splitUsersCount[0] * 100) / 100}</h1>
         </div>
         <div className='progressBarDiv'>
-        <LinearProgress className='progressBar' variant="determinate" value={((splitUsersName[0]?.includes(username)?usersPaid[0]+1:usersPaid[0])* 100)/splitUsersCount} />
-        <p className='countNum'>{splitUsersName[0]?.includes(username)?usersPaid[0]+1:usersPaid[0]?usersPaid[0]+1:usersPaid[0]}/{splitUsersCount} paid</p>
+        <LinearProgress className='progressBar' variant="determinate" value={((splitUsersName[0]?.includes(splitBy)?usersPaid[0]+1:usersPaid[0])* 100)/splitUsersCount} />
+        <p className='countNum'>{splitUsersName[0]?.includes(splitBy)?usersPaid[0]+1:usersPaid[0]}/{splitUsersCount} paid</p>
         </div>
         <div className='splitUsersImg'>
           <div className='splitAvatarDiv'> 
