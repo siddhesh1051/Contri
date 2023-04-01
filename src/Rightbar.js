@@ -8,7 +8,6 @@ import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { red, teal } from '@mui/material/colors';
 
 
 export const Rightbar = (props) => {

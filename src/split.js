@@ -174,7 +174,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
     setSplitBy(seeUsers[0])
   }, [splitUsers])
 
-       console.log(splitBy)
+      //  console.log(splitBy)
       // console.log(splitUsers)
       // console.log(splitUsersName)
       // console.log(username)

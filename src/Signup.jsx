@@ -5,6 +5,7 @@ import React from 'react'
 import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { storage, } from './firebase'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import cryptoRandomString from 'crypto-random-string';
 
 
@@ -117,6 +118,7 @@ export default function Signup(props) {
             <div className="image" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <label htmlFor="imginput">
                     <img src={img} style={{ width: '135px', borderRadius: '12px', marginTop: '25px', position: 'relative', cursor: 'pointer' }} alt="" />
+                    <div style={{cursor:'pointer',padding:'5px',paddingRight:'12px',paddingLeft:'12px',backgroundColor:'#2D2D2F',borderRadius:'50px',fontSize:'14px'}}>Choose Image</div>
                 </label>
                 <input onChange={(e) => handlefiles(e)} type="file" id='imginput' hidden />
             </div>

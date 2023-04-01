@@ -9,7 +9,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import logo from './ico/logo.png'
-import { setDoc } from 'firebase/firestore';
 
 
 export const Login = (props) => {
