@@ -1,11 +1,3 @@
-### A real-time chat application
+### A real-time chat application with Bill Splitting Feature made using react and firebase
 
-##### Lets go chat!! https://talkr-chat.vercel.app/
-
-features:
-
-- Realtime chat update
-- File upload and send
-- Create rooms and join with friends
-- Logout or switch rooms
-
+##### Lets go chat!! https://splitchat.vercel.app/
