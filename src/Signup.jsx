@@ -145,7 +145,7 @@ export default function Signup(props) {
             
 
             <button onClick={() => signup()} style={{ marginTop: '35px', width: '115px', backgroundColor: '#4F64FD', color: 'white', padding: '12px 5px', borderRadius: '8px', cursor: 'pointer', fontSize:'16px' }} >Sign Up</button>
-            <Button onClick={() => props.setSignUp(false)} sx={{ marginBottom: '15px', marginTop: '21px',fontFamily: 'Poppins', color: 'white', fontSize: '13px', textTransform: 'lowercase' }}>Already have an account ?</Button>
+            <Button onClick={() => props.setSignUp(false)} sx={{ marginBottom: '5px', marginTop: '21px',fontFamily: 'Poppins', color: 'white', fontSize: '13px', textTransform: 'lowercase' }}>Already have an account ?</Button>
         </div>
     )
 }
