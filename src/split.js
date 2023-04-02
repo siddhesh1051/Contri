@@ -255,9 +255,13 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
       const docref = doc(db, roomid, finaldocId[0]);
 
-      if (usersPaid[0] < splitUsersCount[0]) {
+      if ((usersPaid[0] < splitUsersCount[0]-1) && splitUsersName[0]?.includes(seeUsers[0])) {
         await handleRazorpay(docref);
-      } else {
+      }
+      else if ((usersPaid[0] < splitUsersCount[0]) && !splitUsersName[0]?.includes(seeUsers[0])) {
+        await handleRazorpay(docref);
+      }
+       else {
         toast.error('All Payments Done');
       }
     } catch (error) {
