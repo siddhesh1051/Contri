@@ -93,11 +93,23 @@ export const Leftbar = (props) => {
     
 }
 
-  function updateLocal() {
+async function updateLocal() {
     if (!newroomid) return toast.error('invalid room id')
     if (JSON.parse(roomsArr).includes(newroomid)) return toast.error('room already exists')
     
     localStorage.setItem('rooms', JSON.stringify([...JSON.parse(roomsArr), newroomid]))
+    await addDoc(collection(db, newroomid), {
+      alert: true,
+      name: props.name,
+      text: props.name + ' Joined ' + newroomid,
+      userimg: props.photo,
+      timestamp: serverTimestamp(),
+      date: new Date().toString()
+    }).then(() => {
+      toast.success(`Group ${newroomid} added successfully`)
+      }).catch((error) => {
+        toast.error('Error adding room')
+        });
     setNewRoomid('')
     props.switchroom(newroomid)
     setcurrRoom(newroomid)
@@ -160,6 +172,8 @@ export const Leftbar = (props) => {
               </div>
               {
                 roomsArr && filtered.length === 0 && JSON.parse(roomsArr).map(item => (
+                 
+                  console.log(item),
                   currRoom===item?
                   <div onClick={() => { props.switchroom(item);setcurrRoom(item)}} key={item} style={{ width:'80%',display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '5px',marginBottom: '5px',padding:'15px',backgroundColor:'#0156BD', cursor: 'pointer',borderRadius:'15px',boxShadow:'-32px -32px 50px -5px rgba(0,0,0,0.1),32px 31px 50px -5px rgba(0,0,0,0.1)',transitionDuration:'200ms' }}>
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
