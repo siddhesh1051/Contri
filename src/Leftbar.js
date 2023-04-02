@@ -20,7 +20,7 @@ export const Leftbar = (props) => {
   const [show, setShow] = useState(false)
   const [user, setUser] = useState([])
   const [currRoom, setcurrRoom] = useState(props.roomid);
-  const [latestMessage, setlatestMessage] = useState('This is Latest Message')
+  const [latestMessage, setlatestMessage] = useState('Click to See Messages')
   const qr = query(collection(db, props.roomid));
   const [open, setOpen] = React.useState(false);
   const [filtered, setFiltered] = useState([])
@@ -179,7 +179,7 @@ async function updateLocal() {
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
                       <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
-                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                      {/* <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p> */}
                     </div>
 
                     </div>
@@ -189,7 +189,7 @@ async function updateLocal() {
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
                       <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
-                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                      <p style={{ fontSize: '13px',color:'#7C7C7C'}}>{latestMessage}</p>
                     </div> 
                     </div>
                     
@@ -202,7 +202,7 @@ async function updateLocal() {
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
                       <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
-                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                      {/* <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p> */}
                     </div>                    
                     </div>
                     :
@@ -210,7 +210,7 @@ async function updateLocal() {
                     <div style={{backgroundColor:'#0169E5', padding: '11px 18px', borderRadius: '50%', marginRight: '15px', fontSize: '15px',boxShadow:'-8px -6px 33px 16px rgba(0,0,0,0.1),12px 15px 32px -5px rgba(0,0,0,0.1)' }} className="box">{item.slice(0, 1)}</div>
                     <div style={{display:'flex',flexDirection:'column'}}>
                       <p style={{ fontSize: '17px' }}>{item.length>15?item.slice(0,10) + '....': item  }</p>
-                      <p style={{ fontSize: '13px',color:'#B9B6B6'}}>{latestMessage}</p>
+                      <p style={{ fontSize: '13px',color:'#7C7C7C'}}>{latestMessage}</p>
                     </div>
                     </div>
                 ))
