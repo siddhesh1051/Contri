@@ -468,7 +468,7 @@ function Chat(props) {
                     {/* <label htmlFor='filein' style={{ border: 'none', outline: 'none', cursor: 'pointer',marginTop:'7px', marginRight:'2px' }}><EmojiEmotionsOutlined /></label> */}
 
                     <input value={input} type="text" placeholder='Type a message...' onKeyPress={(e) => handleEnterButton(e)} onChange={inputhandler} />
-                    <button className='splitBtn' style={{ width: '200px',height:"40px", padding: '10px', borderRadius: '100px', marginRight: '20px', backgroundColor: '#c3edff', border: 'none',cursor:'pointer' }} onClick={() => { handleClickOpenAdd() }}>Split Expense</button>
+                    <button className='splitBtn' style={{ width: '200px',height:"40px", padding: '10px', borderRadius: '100px', marginRight: '20px', backgroundColor: '#c3edff', border: 'none',cursor:'pointer',fontSize:'16px' }} onClick={() => { handleClickOpenAdd() }}>Split <span className='expenseSpan'>Expense</span></button>
                     <Dialog PaperProps={{
                         sx: {
                             width: "100%",
@@ -497,7 +497,7 @@ function Chat(props) {
                                     required={true}
 
                                 />
-                                <p style={{ marginTop: '18px',color:'#828271' }}>Select Members</p>
+                                <p style={{ marginTop: '18px',color:'#969696' }}>Select Members</p>
                                 <FormGroup>
                                     {
                                        membersArray.map((item) => {

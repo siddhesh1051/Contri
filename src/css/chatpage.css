@@ -4,6 +4,7 @@
     flex: 1;
     position: relative;
     background-color: rgb(18,15,19);
+    /* z-index: 0; */
     
 }
 
@@ -76,6 +77,8 @@
     border-radius: 10px;
 
 }
+
+
 
 @media screen and (max-width:420px) {
     .chat__footer input {
@@ -237,3 +240,4 @@
     font-family: Poppins;
     min-width: fit-content;
 }
+

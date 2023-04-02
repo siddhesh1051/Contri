@@ -8,9 +8,14 @@ import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import ClearIcon from '@mui/icons-material/Clear';
+import MenuIcon from '@mui/icons-material/Menu';
+import  {Info} from '@mui/icons-material';
+
 
 
 export const Rightbar = (props) => {
+    const [showRight, setShowRight] = useState(false)
     const [user, setUser] = useState([])
     const [message, setMessage] = useState([])
 
@@ -46,6 +51,18 @@ export const Rightbar = (props) => {
     let sharedArray = [];
 
     // console.log(user);
+    function menu() {
+        if (showRight === false) {
+          document.getElementById('showright').style.display = "block"
+          document.getElementById('showright').style.position = "absolute"
+          document.getElementById('showright').style.left = "15vw"
+          setShowRight(!showRight)
+        }
+        else {
+          document.getElementById('showright').style.display = "none"
+          setShowRight(!showRight)
+        }
+      }
 
 
 
@@ -55,9 +72,15 @@ export const Rightbar = (props) => {
     return (
         <>
             <Toaster />
+            <div className="hamburger">
+        {
+          (!showRight) ? (<button onClick={() => { menu() }} style={{ width: 'fit-content', margin: '0', outline: 'none', border: 'none', backgroundColor: 'transparent', cursor: 'pointer',position:'absolute',left:'75vw',color:'white',display:'flex',alignItems:'center' }}>Info  <span> <Info/></span></button>) : (<button onClick={() => { menu() }} style={{ width: 'fit-content', margin: '0', outline: 'none', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: 'white', position: 'absolute', left: '80vw',top:'1vh' }}><ClearIcon style={{ fontSize: '24px', marginBottom: '-8.85px' }}></ClearIcon></button>)
+        }
+
+      </div>
 
 
-            <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '300px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s',overflow:'auto'}}>
+            <div className='rightbar' id='showright' style={{ backgroundColor: '#252329', minWidth: '300px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s',overflow:'auto'}}>
                 <div className="rommspecificidandp" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent:'center', marginTop: '30px',padding:'20px', backgroundColor:'#03336E', margin:'10px', borderRadius:'10px' }}>
                     <p style={{ color: 'white', fontFamily: 'cursive', fontWeight: '500', fontStyle: 'normal', fontSize: '32px', letterSpacing: '-0.035em', marginLeft: '31px', marginRight: '26px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>{props.roomid.length>11?props.roomid.slice(0,10) + '....': props.roomid  }<ContentCopyIcon style={{ fontSize:'32px', marginLeft: '12px', width: '30px', marginBottom: '-1.8px', cursor: 'pointer', color: '#B9B6B6' }} onClick={() => {
                         navigator.clipboard.writeText(props.roomid); toast.success('Room id copied to clipboard', {

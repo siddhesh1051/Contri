@@ -275,7 +275,7 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
 
 
   return (
-    <div style={{ backgroundColor: 'black' }}>
+    <div>
       <div className='splitBox'>
         <div className='splitTitle'>
           <p>{splitTitle}</p>

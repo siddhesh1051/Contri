@@ -111,18 +111,18 @@ export const Leftbar = (props) => {
   }
 
   return (
-    <>
+    <div style={{zIndex:'99'}}>
       <Toaster />
       <div className="hamburger">
         {
-          (!show) ? (<button onClick={() => { menu() }} style={{ width: 'fit-content', margin: '0', outline: 'none', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }}><MenuIcon style={{ margin: '0', fontSize: '22px', marginBottom: '-6.15px', color: 'white', marginLeft: '-4.95px' }} ></MenuIcon></button>) : (<button onClick={() => { menu() }} style={{ width: 'fit-content', margin: '0', outline: 'none', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: 'white', position: 'absolute', left: '83vw' }}><ClearIcon style={{ fontSize: '18px', marginBottom: '-8.85px' }}></ClearIcon></button>)
+          (!show) ? (<button onClick={() => { menu() }} style={{ width: 'fit-content', margin: '0', outline: 'none', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }}><MenuIcon style={{ margin: '0', fontSize: '22px', marginBottom: '-6.15px', color: 'white', marginLeft: '-4.95px' }} ></MenuIcon></button>) : (<button onClick={() => { menu() }} style={{ width: 'fit-content', margin: '0', outline: 'none', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: 'white', position: 'absolute', left: '60vw' }}><ClearIcon style={{ fontSize: '28px',padding:'5px' }}></ClearIcon></button>)
         }
 
       </div>
       <div className='leftbar' id='showleft' style={{ backgroundColor: '#252329', minWidth: '330px', position: 'relative', height: '100%', flex: '0.17', transition: 'all 0.25s' }}>
         <div className="channelheader" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '52px', borderBottom: '1px solid rgb(35 35 35)' }}>
           
-           <p style={{ fontSize: '16px', marginLeft: '34px', fontWeight: 'bold' }}> Rooms</p><div onClick={() => { handleClickOpenAdd() }} style={{ marginLeft: 'auto', marginRight: '20px', backgroundColor: '#252329', padding: '5px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', cursor: 'pointer' }}><AddIcon sx={{}} /></div>
+           <p style={{ fontSize: '16px', marginLeft: '34px', fontWeight: 'bold' }}> Rooms</p><div onClick={() => { handleClickOpenAdd() }} style={{ marginLeft: 'auto', marginRight: '20px', backgroundColor: '#252329', padding: '5px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', cursor: 'pointer' }}><AddIcon className='addBtn' /></div>
 
            
           
@@ -241,6 +241,6 @@ export const Leftbar = (props) => {
           </Dialog>
         </div>
       </div>
-    </>
+    </div>
   )
 }

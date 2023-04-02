@@ -170,7 +170,7 @@ export const Login = (props) => {
                 </div>
             </Dialog>
             <button style={{ marginTop: '19px', width: '115px', backgroundColor: '#4F64FD', color: 'white', padding: '12px 5px', borderRadius: '12px', cursor: 'pointer', fontSize:'16px',boxShadow:'20px' }} onClick={senduserdetails}>Sign In</button>
-            <Button onClick={() => props.setSignUp(true)} sx={{ marginBottom: '21px', fontFamily: 'Poppins', color: 'white', fontSize: '13px', textTransform: 'lowercase', position: 'absolute', bottom: 0 }}>Don't have an account ?</Button>
+            <Button onClick={() => props.setSignUp(true)} sx={{ marginBottom: '15px', marginTop: '21px', fontFamily: 'Poppins', color: 'white', fontSize: '13px', textTransform: 'lowercase' }}>Don't have an account ?</Button>
 
         </div>
     );
