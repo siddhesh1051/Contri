@@ -217,8 +217,8 @@ const Split = ({ splitTitle, splitAmount, uid, roomid, username }) => {
       key: 'rzp_test_D4QKUfd4DWNLdV',
       amount: (Math.round(splitAmount / splitUsersCount[0] * 100) / 100) * 100,
       currency: 'INR',
-      name: 'Talkr',
-      description: 'Thank you for using Talkr',
+      name: 'Contri',
+      description: 'Thank you for using Contri',
       image: logo,
       handler: function (response) {
         updateDoc(docref, {
