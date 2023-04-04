@@ -4,9 +4,9 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "SplitChat",
-    "short_name": "SplitChat",
-    "description": "A real-time chat application",
+    "name": "Contri",
+    "short_name": "Contri",
+    "description": "A real-time chat application with bill splitting feature",
     "icons": [
         {
             "src": "./logo.png",
